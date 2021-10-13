@@ -47,10 +47,10 @@ export const signupFail = (error) => {
   };
 };
 
-export const signup = (name, phoneNumber, image) => {
+export const signup = (name, phoneNumber, image, fileName) => {
   return async (dispatch) => {
     dispatch(authStart());
-    const response = await shopApi.signup({name, phoneNumber, image});
+    const response = await shopApi.signup({name, phoneNumber, image,fileName});
     if (response?.shopId) {
       dispatch(signupSuccess(response));
     } else {

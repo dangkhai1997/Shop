@@ -8,11 +8,11 @@ export const shopApi = {
       data: { phoneNumber },
     }),
 
-  signup: ({ name, phoneNumber, image }) => {
+  signup: ({ name, phoneNumber, image,fileName }) => {
     const formData = new FormData();
     formData.append("Name", name);
     formData.append("PhoneNumber", phoneNumber);
-    formData.append("Logo", image, "logo");
+    formData.append("Logo", image, fileName);
 
     return CALL({
       method: "post",

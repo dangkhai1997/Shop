@@ -13,6 +13,7 @@ export const Login = (props) => {
     isShowModal: false,
     notify: "",
     isSubmit: false,
+    filename: "",
   });
 
   const auth = useSelector((state) => state.auth);
@@ -45,7 +46,7 @@ export const Login = (props) => {
     });
     state.isLoginPage
       ? dispatch(actions.login(state.phoneNumber))
-      : dispatch(actions.signup(state.name, state.phoneNumber, state.image));
+      : dispatch(actions.signup(state.name, state.phoneNumber, state.image, state.filename));
   };
 
   const handleChange = (e) => {
@@ -57,6 +58,7 @@ export const Login = (props) => {
   };
 
   const onFileChange = (event) => {
+    const filename = event.target.files[0].name;
     const value = event.target.files[0];
     const url = URL.createObjectURL(value);
     const { name } = event.target;
@@ -64,6 +66,7 @@ export const Login = (props) => {
       ...state,
       [name]: value,
       url: url,
+      filename: filename,
     });
   };
 
@@ -127,7 +130,6 @@ export const Login = (props) => {
               <input
                 type="file"
                 id="myFile"
-                name="filename"
                 onChange={onFileChange}
                 name="image"
               />
