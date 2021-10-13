@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../redux";
 import { Button, Form, Image, Modal } from "semantic-ui-react";
+import Loading from "../../components/Loading";
 export const Login = (props) => {
   const [state, setState] = useState({
     name: "",
@@ -10,7 +11,7 @@ export const Login = (props) => {
     url: "/images/default.png",
     isLoginPage: false,
     isShowModal: false,
-    notify: '',
+    notify: "",
     isSubmit: false,
   });
 
@@ -22,11 +23,10 @@ export const Login = (props) => {
     }
 
     if (auth.error) {
-
       setState({
         ...state,
         isShowModal: true,
-        notify: auth.error
+        notify: auth.error,
       });
     } else {
       setState({
@@ -67,11 +67,11 @@ export const Login = (props) => {
     });
   };
 
-  const closeModal = () =>{
+  const closeModal = () => {
     setState({
       ...state,
       isShowModal: false,
-    })
+    });
   };
 
   const changePage = (e) => {
@@ -83,22 +83,13 @@ export const Login = (props) => {
   };
 
   const notifyModal = (
-    <Modal
-      centered={false}
-      open={state.isShowModal}
-      onClose={closeModal}
-    >
+    <Modal centered={false} open={state.isShowModal} onClose={closeModal}>
       <Modal.Header>Notify!</Modal.Header>
       <Modal.Content>
-        <Modal.Description>
-          {state.notify}
-        </Modal.Description>
+        <Modal.Description>{state.notify}</Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        <Button
-          onClick={closeModal}>
-          OK
-        </Button>
+        <Button onClick={closeModal}>OK</Button>
       </Modal.Actions>
     </Modal>
   );
@@ -110,7 +101,6 @@ export const Login = (props) => {
         {state.isLoginPage ? "Register" : "Login"}
       </a>
       <Form onSubmit={submitHandler}>
-        {/* {auth?.loading ? ' loading ..................................................' : null} */}
         {!state.isLoginPage && (
           <Form.Field>
             <label>Shop Name</label>
@@ -149,6 +139,7 @@ export const Login = (props) => {
           <Button type="submit">{!state.isLoginPage ? "Save" : "Login"}</Button>
         </div>
       </Form>
+      <Loading active={auth?.loading} />
     </div>
   );
 };
