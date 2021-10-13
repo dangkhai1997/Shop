@@ -2,25 +2,22 @@ import axios from "axios";
 
 const get = async function (url) {
   const response = await axios.get(url);
-  debugger
 
-  return handleResponse(response);
+  return response.data;
 };
 
 const post = async function (url, data) {
-  const response = await axios.post(url, data);
-
-  return handleResponse(response);
+  const response = await axios.post(url, data).catch(handleError.bind(this));
+  console.log(response.data);
+  return response.data;
 };
 
-const handleResponse = function (response) {
-  const { status, data } = response;
-
-  if (status === 200) {
-    return data;
-  }
-
-  return null;
+const handleError = ({ response }) => {
+  const { data } = response;
+  // return {data: data};
+  return Promise.resolve({
+    data: data,
+  });
 };
 
 export const CALL = async ({ ...endpoint }) => {

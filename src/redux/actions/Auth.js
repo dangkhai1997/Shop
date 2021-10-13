@@ -7,10 +7,10 @@ export const authStart = () => {
   };
 };
 
-export const loginSuccess = (currentUser) => {
+export const loginSuccess = ({shopId,phoneNumber}) => {
   return {
     type: actionTypes.LOGIN_SUCCESS,
-    currentUser: currentUser
+    currentUser: {shopId,phoneNumber}
   };
 };
 
@@ -26,8 +26,8 @@ export const login = (phoneNumber) => {
     dispatch(authStart());
     const response = await shopApi.login({phoneNumber});
     console.log(response);
-    if (response?.user) {
-      dispatch(loginSuccess(response.user));
+    if (response?.shopId) {
+      dispatch(loginSuccess(response));
     } else {
       dispatch(loginFail(response));
     }
