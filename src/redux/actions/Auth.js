@@ -21,10 +21,10 @@ export const loginFail = (error) => {
   };
 };
 
-export const login = (name, phoneNumber) => {
+export const login = (phoneNumber) => {
   return async (dispatch) => {
     dispatch(authStart());
-    const response = await shopApi.login({name, phoneNumber});
+    const response = await shopApi.login({phoneNumber});
     console.log(response);
     if (response?.user) {
       dispatch(loginSuccess(response.user));
@@ -34,21 +34,21 @@ export const login = (name, phoneNumber) => {
   };
 };
 
-export const signupSuccess = (currentUser) => {
-  return {
-    type: actionTypes.SIGNUP_SUCCESS,
-    currentUser: currentUser
-  };
-};
+// export const signupSuccess = (currentUser) => {
+//   return {
+//     type: actionTypes.SIGNUP_SUCCESS,
+//     currentUser: currentUser
+//   };
+// };
 
-export const signupFail = (error) => {
-  return {
-    type: actionTypes.SIGNUP_FAIL,
-    err: error
-  };
-};
+// export const signupFail = (error) => {
+//   return {
+//     type: actionTypes.SIGNUP_FAIL,
+//     err: error
+//   };
+// };
 
-export const signup = (email, password) => {
+export const signup = (name, phoneNumber, image) => {
   // return async (dispatch) => {
   //   dispatch(authStart());
   //   const response = await firebaseSignup(email, password);

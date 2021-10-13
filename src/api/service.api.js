@@ -14,7 +14,6 @@ const post = async function (url, data) {
 };
 
 const handleResponse = function (response) {
-    debugger
   const { status, data } = response;
 
   if (status === 200) {
@@ -26,8 +25,6 @@ const handleResponse = function (response) {
 
 export const CALL = async ({ ...endpoint }) => {
   const { url, method, data } = endpoint;
-  debugger;
-
   if (method === "get") {
     return get(url);
   } else if (method === "post") {
