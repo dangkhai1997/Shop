@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../redux";
 import { Button, Form, Image, Modal } from "semantic-ui-react";
 import Loading from "../../components/Loading";
+import { useHistory } from "react-router-dom";
 export const Login = (props) => {
   const [state, setState] = useState({
     name: "",
@@ -17,7 +18,7 @@ export const Login = (props) => {
   });
 
   const auth = useSelector((state) => state.auth);
-
+  const history = useHistory();
   useEffect(() => {
     if (!state.isSubmit) {
       return;
@@ -29,12 +30,22 @@ export const Login = (props) => {
         isShowModal: true,
         notify: auth.error,
       });
-    } else {
+      return;
+    }
+
+    if (auth.user.shopId) {
       setState({
         ...state,
-        isShowModal: false,
+        isShowModal: true,
+        notify: `${state.isLoginPage ? "Login" : "Register"} successful!`,
       });
+      return;
     }
+
+    setState({
+      ...state,
+      isShowModal: false,
+    });
   }, [auth]);
 
   const dispatch = useDispatch();
@@ -46,7 +57,14 @@ export const Login = (props) => {
     });
     state.isLoginPage
       ? dispatch(actions.login(state.phoneNumber))
-      : dispatch(actions.signup(state.name, state.phoneNumber, state.image, state.filename));
+      : dispatch(
+          actions.signup(
+            state.name,
+            state.phoneNumber,
+            state.image,
+            state.filename
+          )
+        );
   };
 
   const handleChange = (e) => {
@@ -75,6 +93,11 @@ export const Login = (props) => {
       ...state,
       isShowModal: false,
     });
+
+    const {
+      user: { shopId },
+    } = auth || {};
+    shopId && history.push(`/admin/${shopId}`);
   };
 
   const changePage = (e) => {

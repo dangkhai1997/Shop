@@ -11,11 +11,11 @@ export default function RouteWrapper({
   const user = useSelector((state) => state.auth.user);
 
   if (isPrivate && !user) {
-    return <Redirect to="/" />;
+    return <Redirect to="/Login" />;
   }
-  if (!isPrivate && user) {
-    return <Redirect to="/dashboard" />;
-  }
+  // if (!isPrivate && user) {
+  //   return <Redirect to = '/Welcome' />;
+  // }
   return <Route {...rest} component={Component} />;
 }
 
