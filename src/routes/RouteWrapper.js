@@ -11,7 +11,7 @@ export default function RouteWrapper({
   const user = useSelector((state) => state.auth.user);
 
   if (isPrivate && !user) {
-    return <Redirect to="/Login" />;
+    return <Redirect to="/login" />;
   }
   // if (!isPrivate && user) {
   //   return <Redirect to = '/Welcome' />;

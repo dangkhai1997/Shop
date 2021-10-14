@@ -20,4 +20,10 @@ export const shopApi = {
       data: formData,
     });
   },
+
+  getShop: ({ id }) =>
+    CALL({
+      method: "get",
+      url: `https://localhost:5001/api/Shop/${id}`,
+    }),
 };
