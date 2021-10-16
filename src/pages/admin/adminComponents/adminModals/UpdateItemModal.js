@@ -56,8 +56,7 @@ export const UpdateItemModal = (props) => {
   };
 
   const saveItem = () => {
-    console.log(state.itemId);
-    state.itemId !== "" ? updateItem() : InsertItem();
+    state.itemId !== "" ? updateItem() : insertItem();
   };
 
   const updateItem = async () => {
@@ -75,7 +74,19 @@ export const UpdateItemModal = (props) => {
     props.updateToList(newItem);
     props.closeModal();
   };
-  const InsertItem = () => {};
+  const insertItem = async() => {
+    const payLoad = {
+      shopId: auth.user.shopId,
+      name: state.name,
+      price: parseFloat(state.price.replace("$", "").replaceAll(",", "")),
+      image: state.newImage,
+      fileName: state.filename,
+    };
+
+    const newItem = await itemApi.createItem(payLoad);
+    props.updateToList(newItem);
+    props.closeModal();
+  };
 
   return (
     <Modal onClose={() => props.closeModal()} open={props.isShowModal}>

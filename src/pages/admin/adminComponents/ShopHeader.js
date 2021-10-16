@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Segment, Button } from "semantic-ui-react";
+import { Grid, Segment, Button, Popup } from "semantic-ui-react";
 import { Profile } from "./Profile";
 export const ShopHeader = (props) => {
+  const copyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    const button = document.getElementById("btn-copy");
+    button.innerText = "Copied";
+    setTimeout(() => {
+      button.innerText = "Copy";
+    }, 5000);
+  };
+
   return (
     <Grid columns={3} divided>
       <Grid.Row stretched>
@@ -18,7 +27,9 @@ export const ShopHeader = (props) => {
         </Grid.Column>
         <Grid.Column>
           <Button.Group size="small" style={{ maxHeight: "50%" }}>
-            <Button positive>Copy</Button>
+            <Button positive onClick={copyLink} id="btn-copy">
+              Copy
+            </Button>
             <Button.Or />
             <Button primary>Share</Button>
           </Button.Group>

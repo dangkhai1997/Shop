@@ -3,6 +3,8 @@ import { Icon, Label, Menu, Table } from "semantic-ui-react";
 import { Item } from "./Item";
 import { UpdateItemModal } from "./adminModals/UpdateItemModal";
 import { DeleteModal } from "./adminModals/DeleteModal";
+import { Button } from "semantic-ui-react";
+
 export const Items = (props) => {
   const [state, setState] = useState({
     isShowModal: false,
@@ -42,7 +44,10 @@ export const Items = (props) => {
       oldItem.name = newItem.name;
       oldItem.price = newItem.price;
       oldItem.image = newItem.image;
+      return;
     }
+
+    state.items.push(newItem);
   };
 
   const showDeleteModal = (isShow) => {
@@ -63,7 +68,7 @@ export const Items = (props) => {
 
   const deleteItemSucessfully = (itemId) => {
     const newItems = state.items.filter((i) => i.itemId !== itemId);
-    
+
     setState({
       ...state,
       items: newItems,
@@ -98,16 +103,20 @@ export const Items = (props) => {
       <Table celled>
         <Table.Header>
           <Table.Row>
+            <Button primary onClick={onUpdateItem}>
+              New Item
+            </Button>
+          </Table.Row>
+        </Table.Header>
+        <Table.Header>
+          <Table.Row>
             <Table.HeaderCell>Picture</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>
             <Table.HeaderCell>Price</Table.HeaderCell>
             <Table.HeaderCell> </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
-        <Table.Body>
-          {listItems}
-          {/* <Item/> */}
-        </Table.Body>
+        <Table.Body>{listItems}</Table.Body>
 
         <Table.Footer>
           <Table.Row>

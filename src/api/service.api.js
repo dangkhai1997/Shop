@@ -1,6 +1,12 @@
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import * as actions from "../redux";
+import React, { useState, useEffect } from "react";
+
+useEffect(() => {
+   const dispatch = useDispatch();
+  dispatch(actions.startLoading());
+}, []);
 
 const get = async function (url) {
   const response = await axios.get(url);
