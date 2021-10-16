@@ -1,12 +1,10 @@
 import React from "react";
 import { Button, Table, Image } from "semantic-ui-react";
-import { UpdateItemModal } from "./adminModals/UpdateItemModal";
 export const Item = (props) => {
   var formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
   });
-  <UpdateItemModal />
 
   return (
     <Table.Row>
@@ -25,8 +23,12 @@ export const Item = (props) => {
       <Table.Cell>{formatter.format(props.item?.price)}</Table.Cell>
       <Table.Cell>
         <div>
-          <Button color="pink">Edit</Button>
-          <Button color="red">Delete</Button>
+          <Button color="pink" onClick={props.onUpdateItem}>
+            Edit
+          </Button>
+          <Button color="red" onClick={props.onDeleteItem}>
+            Delete
+          </Button>
         </div>
       </Table.Cell>
     </Table.Row>

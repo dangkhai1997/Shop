@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../redux";
 import { Button, Form, Image, Modal } from "semantic-ui-react";
-import Loading from "../../components/Loading";
+// import Loading from "../../components/Loading";
 import { useHistory } from "react-router-dom";
 export const Login = (props) => {
   const [state, setState] = useState({
@@ -164,7 +164,7 @@ export const Login = (props) => {
           <Button type="submit">{!state.isLoginPage ? "Save" : "Login"}</Button>
         </div>
       </Form>
-      <Loading active={auth?.loading} />
+      {/* <Loading active={auth?.loading} /> */}
     </div>
   );
 };
