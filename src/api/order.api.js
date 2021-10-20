@@ -7,4 +7,10 @@ export const orderApi = {
       url: "https://localhost:5001/api/Order",
       data: { cartId, deliveryInformation },
     }),
+
+    getOrder: ({ orderId}) =>
+    CALL({
+      method: "get",
+      url: `https://localhost:5001/api/Order/${orderId}`,
+    }),
 };
