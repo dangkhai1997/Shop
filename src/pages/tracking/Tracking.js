@@ -44,7 +44,7 @@ export const Tracking = (props) => {
           </Grid.Column>
         </Grid.Row>
       </Grid>
-      <TrackingItems item={state.information?.itemsInCart}></TrackingItems>
+      <TrackingItems items={state.information?.itemsInCart}></TrackingItems>
     </>
   );
 };

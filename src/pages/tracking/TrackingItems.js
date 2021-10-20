@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { orderApi } from "../../api/order.api";
 import { Grid, Segment, Icon, Label, Menu, Table } from "semantic-ui-react";
+import { TrackingItem } from "./TrackingItem";
 
 export const TrackingItems = (props) => {
   const [state, setState] = useState({
@@ -15,6 +16,13 @@ export const TrackingItems = (props) => {
     });
   }, [props.items]);
 
+  const listItems = state.items?.map((item,index) => (
+    <TrackingItem
+      key={index}
+      item={item}
+    />
+  ));
+
   return (
     <>
       <Table celled>
@@ -25,6 +33,7 @@ export const TrackingItems = (props) => {
             <Table.HeaderCell>Qty/Sub</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
+        {listItems}
       </Table>
     </>
   );

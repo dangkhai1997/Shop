@@ -4,22 +4,16 @@ import { orderApi } from "../../api/order.api";
 import { Grid, Segment,Icon, Label, Menu, Table  } from "semantic-ui-react";
 
 export const TrackingItem = (props) => {
-  const orderId = props.location.pathname.split("/")[2] || "";
-
   const [state, setState] = useState({
-    information: null,
+    item: null,
   });
-
-  const fetchInformation = async () => {
-    const information = await orderApi.getOrder({ orderId });
+  
+  useEffect(() => {
     setState({
       ...state,
-      information: information,
+      item: props.item,
     });
-  };
-  useEffect(() => {
-    fetchInformation();
-  }, []);
+  }, [props.item]);
 
   return (
     <>
