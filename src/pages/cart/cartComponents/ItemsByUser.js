@@ -47,7 +47,7 @@ export const ItemsByUser = (props) => {
     });
   };
 
-  const submitCart = () => {
+  const submitCart = async() => {
     const deletedItems = getDeletedItems();
     const data = {
       items: [...props.itemsInCart, ...deletedItems],
@@ -55,7 +55,8 @@ export const ItemsByUser = (props) => {
       cartId: props.cartId,
     };
 
-    cartApi.submitCart(data);
+    const response = await cartApi.submitCart(data);
+    response?.isSuccess && props.orderCart();
   };
 
   const getDeletedItems = () => {

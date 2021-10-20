@@ -5,6 +5,8 @@ import { ShopItems } from "./cartComponents/ShopItems";
 import { useSelector, useDispatch } from "react-redux";
 import { ItemsByUser } from "./cartComponents/ItemsByUser";
 import { LogLevel, HubConnectionBuilder } from "@microsoft/signalr";
+import { Button, TextArea, Image, Modal } from "semantic-ui-react";
+import { orderApi } from "../../api/order.api";
 
 export const Cart = (props) => {
   const cartId = props.location.pathname.split("/")[2] || "";
@@ -13,6 +15,8 @@ export const Cart = (props) => {
   const [state, setState] = useState({
     cartInformation: null,
     deletedItems: [],
+    isShowModal: false,
+    deliveryInformation: "",
   });
 
   const fetchInformation = async (cartId) => {
@@ -187,8 +191,68 @@ export const Cart = (props) => {
     );
   };
 
+  const orderCart = () => {
+    setState({
+      ...state,
+      isShowModal: true,
+    });
+  };
+
+  const closeModal = () => {
+    setState({
+      ...state,
+      isShowModal: false,
+    });
+  };
+
+  const saveOrder = async() => {
+    await orderApi.saveOrder({
+      cartId,
+      deliveryInformation: state.deliveryInformation,
+    });
+
+    setState({
+      ...state,
+      isShowModal: false,
+    });
+  };
+
+  const handleChange = (e) => {
+    setState({
+      ...state,
+      deliveryInformation: e.target.value,
+    });
+  };
+
   return (
     <>
+      <Button onClick={orderCart}>xx</Button>
+      <Modal centered={false} open={state.isShowModal} onClose={closeModal}>
+        <Modal.Header>Notify!</Modal.Header>
+        <Modal.Content>
+          <Modal.Description>
+            {state.cartInformation?.customerId !== authUser.user.customerId ? (
+              `submit successfully, please wait until the cart's host completed`
+            ) : (
+              <>
+                Enter your deliveryInformation:
+                <TextArea
+                  placeholder="deliveryInformation"
+                  onChange={handleChange}
+                />
+              </>
+            )}
+          </Modal.Description>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button onClick={saveOrder}>
+            {state.cartInformation?.customerId !== authUser.user.customerId
+              ? "Oke"
+              : "Order"}
+          </Button>
+        </Modal.Actions>
+      </Modal>
+
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div style={{ width: "57%", height: "100%" }}>
           <CartHeader shop={state.cartInformation?.shop}></CartHeader>
@@ -203,6 +267,7 @@ export const Cart = (props) => {
             updateAmountCart={updateAmountCart}
             cartId={cartId}
             deletedItems={state.deletedItems}
+            orderCart={orderCart}
           ></ItemsByUser>
         </div>
       </div>
