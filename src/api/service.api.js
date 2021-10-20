@@ -10,6 +10,7 @@ const get = async function (url) {
 
 const post = async function (url, data) {
   const response = await axios.post(url, data).catch(handleError.bind(this));
+  debugger
   return response.data;
 };
 

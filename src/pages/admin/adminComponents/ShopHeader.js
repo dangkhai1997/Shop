@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Grid, Segment, Button, Popup } from "semantic-ui-react";
 import { Profile } from "./Profile";
+import {ShareModal} from '../../../components/ShareModal'
 export const ShopHeader = (props) => {
+  const [state, setState] = useState({
+    isShowModal: false,
+  });
+  
+  const auth = useSelector((state) => state.auth);
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     const button = document.getElementById("btn-copy");
@@ -11,7 +18,27 @@ export const ShopHeader = (props) => {
     }, 5000);
   };
 
+  const shareShop = () => {
+     setState({
+      ...state,
+      isShowModal: true,
+    });
+  };
+
+  const onCloseShare = () => {
+     setState({
+      ...state,
+      isShowModal: false,
+    });
+  };
+
   return (
+    <>
+      <ShareModal
+        isShowModal={state.isShowModal}
+                onCloseShare={onCloseShare}
+
+      />
     <Grid columns={3} divided>
       <Grid.Row stretched>
         <Grid.Column>
@@ -22,7 +49,7 @@ export const ShopHeader = (props) => {
         <Grid.Column>
           <Segment>Shop Link</Segment>
           <Segment>
-            <a>View order</a>
+              <a onClick={()=> props.changeView()}> {props.isMenu ? 'View Order' : 'View Menu'}</a>
           </Segment>
         </Grid.Column>
         <Grid.Column>
@@ -31,10 +58,12 @@ export const ShopHeader = (props) => {
               Copy
             </Button>
             <Button.Or />
-            <Button primary>Share</Button>
+              <Button primary onClick={() => shareShop()}
+              >Share</Button>
           </Button.Group>
         </Grid.Column>
       </Grid.Row>
-    </Grid>
+      </Grid>
+    </>
   );
 };

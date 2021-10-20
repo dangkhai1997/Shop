@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../redux";
 import { Button, Form, Image, Modal } from "semantic-ui-react";
-// import Loading from "../../components/Loading";
 import { useHistory } from "react-router-dom";
 export const Login = (props) => {
   const [state, setState] = useState({
@@ -14,7 +13,7 @@ export const Login = (props) => {
     isShowModal: false,
     notify: "",
     isSubmit: false,
-    filename: "",
+    fileName: "",
   });
 
   const auth = useSelector((state) => state.auth);
@@ -62,7 +61,7 @@ export const Login = (props) => {
             state.name,
             state.phoneNumber,
             state.image,
-            state.filename
+            state.fileName
           )
         );
   };
@@ -76,7 +75,7 @@ export const Login = (props) => {
   };
 
   const onFileChange = (event) => {
-    const filename = event.target.files[0].name;
+    const fileName = event.target.files[0].name;
     const value = event.target.files[0];
     const url = URL.createObjectURL(value);
     const { name } = event.target;
@@ -84,7 +83,7 @@ export const Login = (props) => {
       ...state,
       [name]: value,
       url: url,
-      filename: filename,
+      fileName: fileName,
     });
   };
 
@@ -164,7 +163,6 @@ export const Login = (props) => {
           <Button type="submit">{!state.isLoginPage ? "Save" : "Login"}</Button>
         </div>
       </Form>
-      {/* <Loading active={auth?.loading} /> */}
     </div>
   );
 };

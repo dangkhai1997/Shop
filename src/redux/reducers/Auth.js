@@ -42,12 +42,6 @@ export const authReducer = (state = initialState, action) => {
         loading: false,
         error: action.err
       };
-    case actionTypes.GOOGLE_LOGIN:
-      return {
-        ...state,
-        loading: false,
-        user: action.googleUser
-      };
     case actionTypes.USER_LOGOUT:
       return {
         ...state,

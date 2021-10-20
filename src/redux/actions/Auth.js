@@ -71,10 +71,3 @@ export const logout = () => {
   //   dispatch(userLogout());
   // };
 };
-
-export const googleAuth = (user) => {
-  return {
-    type: actionTypes.GOOGLE_LOGIN,
-    googleUser: user
-  };
-};
