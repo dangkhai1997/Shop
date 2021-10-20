@@ -4,30 +4,31 @@ import { CartHeader } from "./cartComponents/CartHeader";
 import { ShopItems } from "./cartComponents/ShopItems";
 import { useSelector, useDispatch } from "react-redux";
 import { ItemsByUser } from "./cartComponents/ItemsByUser";
-import { LogLevel, HubConnectionBuilder } from '@microsoft/signalr';
+import { LogLevel, HubConnectionBuilder } from "@microsoft/signalr";
 
 export const Cart = (props) => {
-  const cartId = props.location.pathname.split('/')[2] || '';
+  const cartId = props.location.pathname.split("/")[2] || "";
   const authUser = useSelector((state) => state.authUser);
 
   const [state, setState] = useState({
     cartInformation: null,
   });
 
-  const fetchInformation = async (cartId) => { //174b9d
-    const cartInformation = await cartApi.getCart({cartId});
+  const fetchInformation = async (cartId) => {
+    //174b9d
+    const cartInformation = await cartApi.getCart({ cartId });
 
     setState({
       ...state,
       cartInformation: cartInformation,
     });
-    };
-    
-    useEffect(() => {
-      fetchInformation(cartId);
-      startCons()
-    }, []);
-  
+  };
+
+  useEffect(() => {
+    fetchInformation(cartId);
+    startCons();
+  }, []);
+
   const addToCart = (item) => {
     const itemIncart = {
       price: item.price,
@@ -38,8 +39,8 @@ export const Cart = (props) => {
       readyToOrder: false,
       customerName: authUser.user.name,
       itemName: item.name,
-      itemIsActive: true
-    }
+      itemIsActive: true,
+    };
 
     addCart(itemIncart);
     // @TODO: Hard code de hien 2 cai
@@ -47,33 +48,48 @@ export const Cart = (props) => {
   };
 
   const addCart = (itemIncart) => {
-      console.log(state.cartInformation);
-    
-    const isExistUserCart = state.cartInformation?.itemsInCart.find(c=>c.itemId === itemIncart.itemId && c.customerId === itemIncart.customerId);
+    console.log(state.cartInformation);
+
+    const isExistUserCart = state.cartInformation?.itemsInCart.find(
+      (c) =>
+        c.itemId === itemIncart.itemId && c.customerId === itemIncart.customerId
+    );
     isExistUserCart ? updateCart(itemIncart) : addNewCart(itemIncart);
   };
 
   const updateCart = (itemIncart) => {
     const cartInformation = { ...state.cartInformation };
-    const oldItem = cartInformation?.itemsInCart.find(c => c.itemId === itemIncart.itemId && c.customerId === itemIncart.customerId);
+    const oldItem = cartInformation?.itemsInCart.find(
+      (c) =>
+        c.itemId === itemIncart.itemId && c.customerId === itemIncart.customerId
+    );
     oldItem.amount += 1;
-    
+
     setState({
       ...state,
       cartInformation: cartInformation,
     });
-  }
-  
+  };
+
   const addNewCart = (itemIncart) => {
     const item = { ...itemIncart, amount: 1 };
     const cartInformation = { ...state.cartInformation };
     if (item.customerId === authUser.user.customerId) {
-      debugger
-      const index = cartInformation.itemsInCart.reverse().findIndex(i => i.customerId === itemIncart.customerId);
-      index !== -1 ? cartInformation.itemsInCart.splice(index+1,0,item): 
-      cartInformation.itemsInCart.unshift(item);
-    }
-    else {
+      debugger;
+
+      const lastestItem = cartInformation.itemsInCart
+      .find((i) => i.customerId === itemIncart.customerId);
+
+      const index = cartInformation.itemsInCart
+        .lastIndexOf(lastestItem);
+      index !== -1
+        ? cartInformation.itemsInCart.splice(
+            cartInformation.itemsInCart.length - index,
+            0,
+            item
+          )
+        : cartInformation.itemsInCart.unshift(item);
+    } else {
       cartInformation.itemsInCart.push(item);
     }
 
@@ -84,25 +100,27 @@ export const Cart = (props) => {
   };
 
   const updateAmountCart = ({ customerId, itemId, newAmount }) => {
-    if (newAmount === '') {
+    if (newAmount === "") {
       return;
     }
     const cartInformation = { ...state.cartInformation };
-    const oldItem = cartInformation?.itemsInCart.find(c => c.itemId === itemId && c.customerId === customerId);
+    const oldItem = cartInformation?.itemsInCart.find(
+      (c) => c.itemId === itemId && c.customerId === customerId
+    );
     if (!oldItem) {
       return;
     }
 
     if (newAmount > 0) {
       oldItem.amount = parseInt(newAmount);
-    }
-    else {
+    } else {
       // Remove from cart
-      const index = cartInformation?.itemsInCart.findIndex(c => c.itemId === itemId && c.customerId === customerId);
+      const index = cartInformation?.itemsInCart.findIndex(
+        (c) => c.itemId === itemId && c.customerId === customerId
+      );
       if (index > -1) {
         cartInformation?.itemsInCart.splice(index, 1);
-      }
-      else if (index === 0) {
+      } else if (index === 0) {
         cartInformation?.itemsInCart.shift();
       }
     }
@@ -111,13 +129,12 @@ export const Cart = (props) => {
       ...state,
       cartInformation: cartInformation,
     });
-    
   };
 
   const startCons = async () => {
     const connection = new HubConnectionBuilder()
       .withUrl(`https://localhost:5001/hubs/cart?cart=${cartId}`, {
-        withCredentials: false
+        withCredentials: false,
       })
       .configureLogging(LogLevel.Information)
       .build();
@@ -128,20 +145,21 @@ export const Cart = (props) => {
       console.log(e);
     }
 
-    connection.on('AddItemToCart', (item) => {
-      debugger
+    connection.on("AddItemToCart", (item) => {
+      debugger;
       console.log(state.cartInformation);
-  // addToCartFromSignal(item);
-    //   setState({
-    //   ...state,
-    //   test: item,
-    // });
+      // addToCartFromSignal(item);
+      //   setState({
+      //   ...state,
+      //   test: item,
+      // });
     });
-    connection.on('UnsubmitItems', (message) => { console.log('you just unsubmtited cart id: ' + message) });
+    connection.on("UnsubmitItems", (message) => {
+      console.log("you just unsubmtited cart id: " + message);
+    });
   };
 
   const addToCartFromSignal = (item) => {
-
     const price = getPrice(item.itemId);
 
     const itemIncart = {
@@ -149,7 +167,7 @@ export const Cart = (props) => {
       customerId: item.customerId,
       cartId: cartId,
       itemId: item.itemId,
-    }
+    };
 
     console.log(itemIncart);
 
@@ -157,21 +175,30 @@ export const Cart = (props) => {
   };
 
   const getPrice = (itemId) => {
-    return state.cartInformation?.shop.items.find(i=> i.itemId === itemId)?.price || 0;
+    return (
+      state.cartInformation?.shop.items.find((i) => i.itemId === itemId)
+        ?.price || 0
+    );
   };
 
-  
-    return (
-      <>
-        <div style={{display: 'flex',justifyContent: 'space-between'}}> 
-          <div style={{width: '57%',height: '100%'}}>
-            <CartHeader shop={state.cartInformation?.shop} ></CartHeader>
-            <ShopItems items={state.cartInformation?.shop?.items} addToCart={addToCart}></ShopItems>
-          </div>
-          <div style={{ width: '42%', height: '100%' }} >
-          <ItemsByUser itemsInCart={state.cartInformation?.itemsInCart} updateAmountCart={updateAmountCart}></ItemsByUser>
-           </div>
+  return (
+    <>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ width: "57%", height: "100%" }}>
+          <CartHeader shop={state.cartInformation?.shop}></CartHeader>
+          <ShopItems
+            items={state.cartInformation?.shop?.items}
+            addToCart={addToCart}
+          ></ShopItems>
         </div>
-      </>
-    );
-}
+        <div style={{ width: "42%", height: "100%" }}>
+          <ItemsByUser
+            itemsInCart={state.cartInformation?.itemsInCart}
+            updateAmountCart={updateAmountCart}
+            cartId={cartId}
+          ></ItemsByUser>
+        </div>
+      </div>
+    </>
+  );
+};
