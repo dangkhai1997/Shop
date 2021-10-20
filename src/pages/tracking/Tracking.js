@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { orderApi } from "../../api/order.api";
-import { Grid, Segment,Icon, Label, Menu, Table  } from "semantic-ui-react";
+import { Grid, Segment, Icon, Label, Menu, Table } from "semantic-ui-react";
+import { TrackingItems } from "./TrackingItems";
 
 export const Tracking = (props) => {
   const orderId = props.location.pathname.split("/")[2] || "";
@@ -31,13 +32,11 @@ export const Tracking = (props) => {
         </Grid.Row>
       </Grid>
       <Grid columns={3} divided>
-        <Grid.Row>
-        </Grid.Row>
+        <Grid.Row></Grid.Row>
         <Grid.Row>
           <Grid.Column>
             <Segment>Shop Name: Shop 1</Segment>
           </Grid.Column>
-         
         </Grid.Row>
         <Grid.Row>
           <Grid.Column>
@@ -45,24 +44,7 @@ export const Tracking = (props) => {
           </Grid.Column>
         </Grid.Row>
       </Grid>
-
-      <Table celled>
-    <Table.Header>
-      <Table.Row>
-        <Table.HeaderCell>#</Table.HeaderCell>
-        <Table.HeaderCell>Name</Table.HeaderCell>
-        <Table.HeaderCell>Qty/Sub</Table.HeaderCell>
-      </Table.Row>
-    </Table.Header>
-
-    <Table.Body>
-      <Table.Row>
-        <Table.Cell>Cell</Table.Cell>
-        <Table.Cell>Cell</Table.Cell>
-        <Table.Cell>Cell</Table.Cell>
-      </Table.Row>
-    </Table.Body>
-  </Table>
+      <TrackingItems item={state.information?.itemsInCart}></TrackingItems>
     </>
   );
 };
