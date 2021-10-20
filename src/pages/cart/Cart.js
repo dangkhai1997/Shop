@@ -12,12 +12,11 @@ export const Cart = (props) => {
 
   const [state, setState] = useState({
     cartInformation: null,
+    deletedItems: [],
   });
 
   const fetchInformation = async (cartId) => {
-    //174b9d
     const cartInformation = await cartApi.getCart({ cartId });
-
     setState({
       ...state,
       cartInformation: cartInformation,
@@ -75,13 +74,11 @@ export const Cart = (props) => {
     const item = { ...itemIncart, amount: 1 };
     const cartInformation = { ...state.cartInformation };
     if (item.customerId === authUser.user.customerId) {
-      debugger;
+      const lastestItem = cartInformation.itemsInCart.find(
+        (i) => i.customerId === itemIncart.customerId
+      );
 
-      const lastestItem = cartInformation.itemsInCart
-      .find((i) => i.customerId === itemIncart.customerId);
-
-      const index = cartInformation.itemsInCart
-        .lastIndexOf(lastestItem);
+      const index = cartInformation.itemsInCart.lastIndexOf(lastestItem);
       index !== -1
         ? cartInformation.itemsInCart.splice(
             cartInformation.itemsInCart.length - index,
@@ -104,6 +101,8 @@ export const Cart = (props) => {
       return;
     }
     const cartInformation = { ...state.cartInformation };
+    const deletedItems = [...state.deletedItems];
+
     const oldItem = cartInformation?.itemsInCart.find(
       (c) => c.itemId === itemId && c.customerId === customerId
     );
@@ -114,10 +113,17 @@ export const Cart = (props) => {
     if (newAmount > 0) {
       oldItem.amount = parseInt(newAmount);
     } else {
+      const deleteItem = cartInformation?.itemsInCart.find(
+        (c) => c.itemId === itemId && c.customerId === customerId
+      );
+
+      deletedItems.push(deleteItem);
+
       // Remove from cart
       const index = cartInformation?.itemsInCart.findIndex(
         (c) => c.itemId === itemId && c.customerId === customerId
       );
+
       if (index > -1) {
         cartInformation?.itemsInCart.splice(index, 1);
       } else if (index === 0) {
@@ -128,6 +134,7 @@ export const Cart = (props) => {
     setState({
       ...state,
       cartInformation: cartInformation,
+      deletedItems: deletedItems,
     });
   };
 
@@ -146,7 +153,6 @@ export const Cart = (props) => {
     }
 
     connection.on("AddItemToCart", (item) => {
-      debugger;
       console.log(state.cartInformation);
       // addToCartFromSignal(item);
       //   setState({
@@ -196,6 +202,7 @@ export const Cart = (props) => {
             itemsInCart={state.cartInformation?.itemsInCart}
             updateAmountCart={updateAmountCart}
             cartId={cartId}
+            deletedItems={state.deletedItems}
           ></ItemsByUser>
         </div>
       </div>

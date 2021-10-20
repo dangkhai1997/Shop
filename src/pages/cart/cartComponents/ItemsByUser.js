@@ -1,10 +1,8 @@
 import { ItemsIncart } from "./ItemsIncart";
 
 import React, { useState, useEffect } from "react";
-import { Icon, Label, Menu, Table } from "semantic-ui-react";
-import { ItemIncart } from "./ItemIncart";
 import { Button } from "semantic-ui-react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { cartApi } from "../../../api/cart.api";
 
 export const ItemsByUser = (props) => {
@@ -24,15 +22,16 @@ export const ItemsByUser = (props) => {
   }, [props, props.itemsInCart]);
 
   const initDataUser = (itemsInCart) => {
-    const user = itemsInCart?.reduce((r, a) => {
+    const cartItems =  [...itemsInCart?.filter(i=>i.customerId === authUser.user.customerId) || [], ...itemsInCart?.filter(i=>i.customerId !== authUser.user.customerId)|| []]
+
+    const user = cartItems?.reduce((r, a) => {
       r[a.customerId] = r[a.customerId] || [];
       r[a.customerId].push(a);
 
       return r;
     }, Object.create(null));
 
-    const items = Object.values(user ?? []);
-
+    let items = Object.values(user ?? []);
     // Caculate total
     let total = 0;
     if (itemsInCart && itemsInCart.length > 0) {
@@ -48,14 +47,30 @@ export const ItemsByUser = (props) => {
     });
   };
 
-  const submitCart = ()=>{
+  const submitCart = () => {
+    const deletedItems = getDeletedItems();
     const data = {
-      items: props.itemsInCart,
+      items: [...props.itemsInCart, ...deletedItems],
       customerId: authUser.user.customerId,
-      cartId: props.cartId
-    }
+      cartId: props.cartId,
+    };
 
     cartApi.submitCart(data);
+  };
+
+  const getDeletedItems = () => {
+    const deletedItems = props.deletedItems?.filter(
+      (d) =>
+        !props.itemsInCart
+          ?.filter((i) => i.customerId === authUser.user.customerId)
+          .map((i) => i.itemId)
+          .includes(d.itemId)
+    );
+    deletedItems.forEach((item) => {
+      item.isDeleted = true;
+    });
+
+    return deletedItems;
   };
 
   const itemsByUser = state.items?.map((item, index) => (

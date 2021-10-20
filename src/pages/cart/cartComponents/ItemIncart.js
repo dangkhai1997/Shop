@@ -1,21 +1,25 @@
-import React, {useEffect, useState} from "react";
-import { Button, Table, Image,Form } from "semantic-ui-react";
+import React, { useEffect, useState } from "react";
+import { Button, Table, Image, Form } from "semantic-ui-react";
+import { useSelector, useDispatch } from "react-redux";
+
 export const ItemIncart = (props) => {
+  const authUser = useSelector((state) => state.authUser);
+
   var formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
   });
 
   const [state, setState] = useState({
-    src: '',
+    src: "",
   });
 
   const handleChangeAmout = (e) => {
     const changeAmout = {
       customerId: props.item.customerId,
       itemId: props.item.itemId,
-      newAmount: e.target.value
-    }
+      newAmount: e.target.value,
+    };
 
     props.updateAmountCart(changeAmout);
   };
@@ -24,8 +28,8 @@ export const ItemIncart = (props) => {
     const changeAmout = {
       customerId: props.item.customerId,
       itemId: props.item.itemId,
-      newAmount: 0
-    }
+      newAmount: 0,
+    };
     props.updateAmountCart(changeAmout);
   };
 
@@ -35,40 +39,39 @@ export const ItemIncart = (props) => {
       ...state,
       src: imageShop.src,
     });
-    
   }, [props.item]);
 
   return (
     <Table.Row>
       <Table.Cell>
-        <Image
-          style={{ margin: "0 auto" }}
-          src={state.src}
-          size="tiny"
-        />
+        <Image style={{ margin: "0 auto" }} src={state.src} size="tiny" />
       </Table.Cell>
-      <Table.Cell>{props.item?.itemName}
-        <br/>
-      {formatter.format(props.item?.price)}
-      
+      <Table.Cell>
+        {props.item?.itemName}
+        <br />
+        {formatter.format(props.item?.price)}
       </Table.Cell>
       <Table.Cell>
         <Form.Field>
-        <input value={props.item?.amount}
+          <input
+            value={props.item?.amount}
             onChange={handleChangeAmout}
             type="number"
             min="1"
-        />
-</Form.Field>
-        <br/>
+            disabled={authUser.user.customerId !== props.item?.customerId}
+          />
+        </Form.Field>
+        <br />
         {formatter.format(props.item?.price * props.item?.amount)}
       </Table.Cell>
       <Table.Cell>
         <div>
-          
-          <Button color="red"
-          onClick={removeItem}>
-             X
+          <Button
+            color="red"
+            disabled={authUser.user.customerId !== props.item?.customerId}
+            onClick={removeItem}
+          >
+            X
           </Button>
         </div>
       </Table.Cell>
