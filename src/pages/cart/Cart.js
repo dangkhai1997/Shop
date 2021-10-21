@@ -271,6 +271,7 @@ export const Cart = (props) => {
             cartId={cartId}
             deletedItems={state.deletedItems}
             orderCart={orderCart}
+            customerId= {state.cartInformation?.customerId}
           ></ItemsByUser>
         </div>
       </div>

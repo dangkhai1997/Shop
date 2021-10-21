@@ -16,6 +16,7 @@ export const ItemsByUser = (props) => {
   const [state, setState] = useState({
     items: [],
     total: 0,
+    isCurrentUserCompleted: false,
   });
 
   useEffect(() => {
@@ -23,7 +24,14 @@ export const ItemsByUser = (props) => {
   }, [props, props.itemsInCart]);
 
   const initDataUser = (itemsInCart) => {
-    const cartItems =  [...itemsInCart?.filter(i=>i.customerId === authUser.user.customerId) || [], ...itemsInCart?.filter(i=>i.customerId !== authUser.user.customerId)|| []]
+    const cartItems = [
+      ...(itemsInCart?.filter(
+        (i) => i.customerId === authUser.user.customerId
+      ) || []),
+      ...(itemsInCart?.filter(
+        (i) => i.customerId !== authUser.user.customerId
+      ) || []),
+    ];
 
     const user = cartItems?.reduce((r, a) => {
       r[a.customerId] = r[a.customerId] || [];
@@ -41,23 +49,31 @@ export const ItemsByUser = (props) => {
         .reduce((a, b) => a + b);
     }
 
+    const isCurrentUserCompleted = itemsInCart?.some(
+      (i) => i.customerId === authUser.user.customerId && i.readyToOrder
+    );
+
     setState({
       ...state,
       items: items,
       total: total,
+      isCurrentUserCompleted: isCurrentUserCompleted,
     });
   };
 
-  const submitCart = async() => {
+  const submitCart = async () => {
     const deletedItems = getDeletedItems();
     const data = {
       items: [...props.itemsInCart, ...deletedItems],
       customerId: authUser.user.customerId,
       cartId: props.cartId,
+      customerId: props.customerId
     };
 
     const response = await cartApi.submitCart(data);
-    (response?.isSuccess || response?.errorMessage === Message.CartStillUnsubmitted) && props.orderCart();
+    (response?.isSuccess ||
+      response?.errorMessage === Message.CartStillUnsubmitted) &&
+      props.orderCart();
   };
 
   const getDeletedItems = () => {
@@ -87,8 +103,9 @@ export const ItemsByUser = (props) => {
     <>
       {itemsByUser}
       <div style={{ float: "left" }}>
-        <Button primary onClick={submitCart}>
-          Submit
+        <Button primary onClick={submitCart}
+        disabled={state.isCurrentUserCompleted && props.customerId !== authUser.user.customerId}>
+         {props.customerId !== authUser.user.customerId? 'Submit': 'Submit Order' } 
         </Button>
         Total: {formatter.format(state.total)}
       </div>
