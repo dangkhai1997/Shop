@@ -64,7 +64,7 @@ export const ItemsByUser = (props) => {
   const submitCart = async () => {
     const deletedItems = getDeletedItems();
     const data = {
-      items: [...props.itemsInCart, ...deletedItems],
+      items: [...props.itemsInCart?.filter(i=>i.customerId === authUser.user.customerId), ...deletedItems],
       customerId: authUser.user.customerId,
       cartId: props.cartId,
       customerId: props.customerId
