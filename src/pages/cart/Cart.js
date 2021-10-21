@@ -7,8 +7,10 @@ import { ItemsByUser } from "./cartComponents/ItemsByUser";
 import { LogLevel, HubConnectionBuilder } from "@microsoft/signalr";
 import { Button, TextArea, Image, Modal } from "semantic-ui-react";
 import { orderApi } from "../../api/order.api";
+import { useHistory } from "react-router-dom";
 
 export const Cart = (props) => {
+  const history = useHistory();
   const cartId = props.location.pathname.split("/")[2] || "";
   const authUser = useSelector((state) => state.authUser);
 
@@ -46,8 +48,6 @@ export const Cart = (props) => {
     };
 
     addCart(itemIncart);
-    // @TODO: Hard code de hien 2 cai
-    //addCart({ ...itemIncart, customerId: 1, customerName: 'hard code name' });
   };
 
   const addCart = (itemIncart) => {
@@ -205,12 +205,16 @@ export const Cart = (props) => {
     });
   };
 
-  const saveOrder = async() => {
-    await orderApi.saveOrder({
+  const saveOrder = async () => {
+    const order = await orderApi.saveOrder({
       cartId,
       deliveryInformation: state.deliveryInformation,
     });
 
+    if(order.isSuccess){
+      history.push(`/tracking/${order.orderId}`);
+    }
+    
     setState({
       ...state,
       isShowModal: false,
@@ -226,7 +230,6 @@ export const Cart = (props) => {
 
   return (
     <>
-      <Button onClick={orderCart}>xx</Button>
       <Modal centered={false} open={state.isShowModal} onClose={closeModal}>
         <Modal.Header>Notify!</Modal.Header>
         <Modal.Content>

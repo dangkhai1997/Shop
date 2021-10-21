@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "semantic-ui-react";
 import { useSelector } from "react-redux";
 import { cartApi } from "../../../api/cart.api";
+import { Message } from "../../../constants/api-response.constants";
 
 export const ItemsByUser = (props) => {
   const authUser = useSelector((state) => state.authUser);
@@ -56,7 +57,7 @@ export const ItemsByUser = (props) => {
     };
 
     const response = await cartApi.submitCart(data);
-    response?.isSuccess && props.orderCart();
+    (response?.isSuccess || response?.errorMessage === Message.CartStillUnsubmitted) && props.orderCart();
   };
 
   const getDeletedItems = () => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Switch } from "react-router-dom";
 import Route from "./RouteWrapper";
-import { Login, Admin, UserLogin, Cart, Tracking } from "../pages";
+import { Login, Admin, UserLogin, Cart, Tracking, Shop } from "../pages";
 export const Routes = () => {
   return (
     <Switch>
@@ -10,6 +10,7 @@ export const Routes = () => {
       <Route path="/user-login" component={UserLogin} />
       <Route path="/cart" component={Cart} />
       <Route path="/tracking" component={Tracking} />
+      <Route path="/shop" component={Shop} />
     </Switch>
   );
 };
