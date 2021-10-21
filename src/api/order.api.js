@@ -13,4 +13,11 @@ export const orderApi = {
       method: "get",
       url: `https://localhost:5001/api/Order/${orderId}`,
     }),
+
+    getOrders: ({ shopId}) =>
+    CALL({
+      method: "get",
+      url: `https://localhost:5001/api/Order/${shopId}/shop/all`,
+    }),
+    
 };

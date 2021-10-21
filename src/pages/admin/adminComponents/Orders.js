@@ -26,9 +26,9 @@ export const Orders = (props) => {
     });
   };
  
-  const listOrder = state.orders?.map((item) => (
+  const listOrder = state.orders?.map((item, index) => (
     <Order
-      key={item.itemId}
+      key={index}
       item={item}
     />
   ));

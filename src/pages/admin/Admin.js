@@ -3,12 +3,14 @@ import { ShopHeader } from "./adminComponents/ShopHeader";
 import {Items} from './adminComponents/Items'
 import { shopApi } from "../../api/shop.api";
 import { Orders } from "./adminComponents/Orders";
+import { orderApi } from "../../api/order.api";
 export const Admin = (props) => {
   const shopId = props.location.pathname.split('/')[2] || '';
 
   const [state, setState] = useState({
     shopInformation: null,
-    isMenu: true
+    isMenu: true,
+    orders: []
   });
 
   const fetchInformation = async (shopId) => {
@@ -21,9 +23,21 @@ export const Admin = (props) => {
     });
   };
 
+  const fetchOrders = async () => {
+    const response = await orderApi.getOrders({ shopId });
+    setState({
+      ...state,
+      orders: response.orders,
+    });
+  }
+
   useEffect(() => {
     fetchInformation(shopId);
   }, []);
+
+  useEffect(() => {
+    !state.isMenu && fetchOrders(shopId)
+  }, [state.isMenu]);
 
   const changeView = () => {
     setState({
@@ -37,7 +51,7 @@ export const Admin = (props) => {
       <ShopHeader shopInformation={state.shopInformation} changeView={changeView} isMenu={ state.isMenu}/>
       {state.isMenu ? 
       <Items items={state.shopInformation?.items} />
-      :<Orders/>
+      :<Orders orders={state.orders}/>
     }
           
     </div>
