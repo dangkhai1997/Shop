@@ -1,12 +1,16 @@
 import React from "react";
-import { Loader } from "semantic-ui-react";
-
+import "./Loading.css";
 const Loading = (props) => (
-  <div>
-    <Loader size="big" active={props.active}>
-      Loading
-    </Loader>
-  </div>
+  <>
+    {props.active && (
+      <div className="container">
+        <div className="dash uno"></div>
+        <div className="dash dos"></div>
+        <div className="dash tres"></div>
+        <div className="dash cuatro"></div>
+      </div>
+    )}
+  </>
 );
 
 export default Loading;
