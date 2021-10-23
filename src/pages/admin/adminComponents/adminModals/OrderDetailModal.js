@@ -50,7 +50,7 @@ export const OrderDetailModal = (props) => {
 
   const updateStatus = async() => {
     const payload = {
-      orderId: "6df52a",
+      orderId: state.item.orderId,
       orderStatus: state.item.status,
       customerId: state.item.customerId,
       shopId: state.item.shopId,
@@ -100,14 +100,6 @@ export const OrderDetailModal = (props) => {
       </>
       <br />
       <Modal.Actions>
-        <Button
-          content="Cancel Order"
-          labelPosition="right"
-          icon="close"
-          color="youtube"
-          onClick={cancelOrder}
-
-        />
         <Button
           content="Update"
           labelPosition="right"

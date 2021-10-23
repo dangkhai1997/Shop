@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../redux";
-import { Button, Form } from "semantic-ui-react";
+import { Button, Form,Image } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 export const UserLogin = (props) => {
   const authUser = useSelector((state) => state.authUser);
@@ -9,6 +9,9 @@ export const UserLogin = (props) => {
   const [state, setState] = useState({
     name: "",
     phoneNumber: "",
+    url: "/images/default.png",
+    image: null,
+    fileName: '',
   });
 
   const history = useHistory();
@@ -24,9 +27,11 @@ export const UserLogin = (props) => {
     state.isLoginPage
       ? dispatch(actions.userLogin(state.phoneNumber))
       : dispatch(
-          actions.signup(
+          actions.userSignup(
             state.name,
-            state.phoneNumber
+            state.phoneNumber,
+            state.image,
+            state.fileName
           )
         );
   };
@@ -53,7 +58,19 @@ export const UserLogin = (props) => {
       isLoginPage: !state.isLoginPage,
     });
   };
- 
+
+  const onFileChange = (event) => {
+    const fileName = event.target.files[0].name;
+    const value = event.target.files[0];
+    const url = URL.createObjectURL(value);
+    const { name } = event.target;
+    setState({
+      ...state,
+      [name]: value,
+      url: url,
+      fileName: fileName,
+    });
+  };
 
   return (
     <div>
@@ -80,7 +97,19 @@ export const UserLogin = (props) => {
             name="phoneNumber"
           />
         </Form.Field>
-
+{!state.isLoginPage && (
+          <>
+            <Image src={state.url} size="small" style={{ margin: "0 auto" }} />
+            <div style={{ maxWidth: "250px", margin: "0 auto" }}>
+              <input
+                type="file"
+                id="myFile"
+                onChange={onFileChange}
+                name="image"
+              />
+            </div>
+          </>
+        )}
         <div>
           <Button type="submit">{!state.isLoginPage ? "Save" : "Login"}</Button>
         </div>

@@ -46,9 +46,9 @@ export const Order = (props) => {
         time={getTime()}
       ></OrderDetailModal>
       <Table.Row>
-        <Table.Cell>#12345</Table.Cell>
-        <Table.Cell>thiếu</Table.Cell>
-        <Table.Cell>thiếu</Table.Cell>
+        <Table.Cell>{props.index+1}</Table.Cell>
+        <Table.Cell>{props.item?.customerName}</Table.Cell>
+        <Table.Cell>{props.item?.customerPhoneNumber}</Table.Cell>
         <Table.Cell>{formatter.format(props.item?.totalPrice)}</Table.Cell>
         <Table.Cell>{props.item?.status}</Table.Cell>
         <Table.Cell>

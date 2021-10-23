@@ -47,17 +47,17 @@ export const userLogin = (phoneNumber) => {
 //   };
 // };
 
-// export const signup = (name, phoneNumber, image, fileName) => {
-//   return async (dispatch) => {
-//     dispatch(authStart());
-//     const response = await shopApi.signup({name, phoneNumber, image,fileName});
-//     if (response?.shopId) {
-//       dispatch(signupSuccess(response));
-//     } else {
-//       dispatch(signupFail(response));
-//     }
-//   };
-// };
+export const userSignup = (name, phoneNumber, image, fileName) => {
+  return async (dispatch) => {
+    dispatch(authUserStart());
+    const response = await customerApi.signup({name, phoneNumber, image,fileName});
+    if (response?.shopId) {
+      dispatch(loginUserSuccess(response));
+    } else {
+      dispatch(loginFail(response));
+    }
+  };
+};
 
 export const userLogout = () => {
   return {

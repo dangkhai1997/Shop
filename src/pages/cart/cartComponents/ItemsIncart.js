@@ -33,12 +33,15 @@ export const ItemsIncart = (props) => {
   return (
     <>
       <div style={{ float: "left" }}>
-        <Label as="a" image style={{ marginRight: "2rem" }}>
+        <Label as="a" image>
           <img src="https://react.semantic-ui.com/images/avatar/small/joe.jpg" />
           {state.items[0]?.customerName}
+          
         </Label>
 
-        {authUser.user.customerId !== state.items[0]?.customerId && (
+        {state.items[0]?.customerId === props.hostId ?
+           <span style={{fontSize: '1.5rem'}}>★</span>  :
+          authUser.user.customerId !== state.items[0]?.customerId && (
           <Checkbox toggle label="Completed" disabled checked={state.isCompleted} />
         )}
       </div>

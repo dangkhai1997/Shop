@@ -67,7 +67,6 @@ export const ItemsByUser = (props) => {
       items: [...props.itemsInCart?.filter(i=>i.customerId === authUser.user.customerId), ...deletedItems],
       customerId: authUser.user.customerId,
       cartId: props.cartId,
-      customerId: props.customerId
     };
 
     const response = await cartApi.submitCart(data);
@@ -96,6 +95,7 @@ export const ItemsByUser = (props) => {
       updateAmountCart={props.updateAmountCart}
       key={index}
       items={item}
+      hostId={props.hostId}
     />
   ));
 
@@ -104,8 +104,8 @@ export const ItemsByUser = (props) => {
       {itemsByUser}
       <div style={{ float: "left" }}>
         <Button primary onClick={submitCart}
-        disabled={state.isCurrentUserCompleted && props.customerId !== authUser.user.customerId}>
-         {props.customerId !== authUser.user.customerId? 'Submit': 'Submit Order' } 
+        disabled={state.isCurrentUserCompleted && props.hostId !== authUser.user.customerId}>
+         {props.hostId !== authUser.user.customerId? 'Submit': 'Submit Order' } 
         </Button>
         Total: {formatter.format(state.total)}
       </div>

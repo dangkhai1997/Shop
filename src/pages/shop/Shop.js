@@ -32,6 +32,8 @@ export const Shop = (props) => {
         isShowModal: true,
         notify: Message.ExistCartWithShop,
       });
+      
+      history.push(`/cart/${cart.cartId}`);
     }
 
   }, []);

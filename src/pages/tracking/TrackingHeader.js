@@ -33,6 +33,7 @@ export const TrackingHeader = (props) => {
             </Grid.Column>
             </Grid.Row>
         </Grid>
+        
          <DeliveryStatus status={state.information?.status}></DeliveryStatus>
 
           </div>
