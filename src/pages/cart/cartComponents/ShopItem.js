@@ -1,11 +1,8 @@
 import React from "react";
 import { Button, Table, Image } from "semantic-ui-react";
-export const ShopItem = (props) => {
-  var formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
+import { formatter } from "../../../helper/helper";
 
+export const ShopItem = (props) => {
   return (
     <Table.Row>
       <Table.Cell>

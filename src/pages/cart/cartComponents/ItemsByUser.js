@@ -5,14 +5,10 @@ import { Button } from "semantic-ui-react";
 import { useSelector } from "react-redux";
 import { cartApi } from "../../../api/cart.api";
 import { Message } from "../../../constants/api-response.constants";
+import { formatter } from "../../../helper/helper";
 
 export const ItemsByUser = (props) => {
   const authUser = useSelector((state) => state.authUser);
-  var formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-
   const [state, setState] = useState({
     items: [],
     total: 0,

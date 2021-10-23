@@ -3,13 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { orderApi } from "../../api/order.api";
 import { Grid, Segment, Icon, Label, Menu, Table } from "semantic-ui-react";
 import { TrackingItem } from "./TrackingItem";
+import { formatter } from "../../helper/helper";
 
 export const TrackingItems = (props) => {
-  var formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-
   const [state, setState] = useState({
     items: [],
     total: 0

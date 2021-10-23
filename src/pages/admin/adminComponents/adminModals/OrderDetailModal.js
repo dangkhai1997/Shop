@@ -14,14 +14,10 @@ import { itemApi } from "../../../../api/item.api";
 import { useSelector, useDispatch } from "react-redux";
 import { OrderStatus } from "../../../../constants/order.constants";
 import { orderApi } from "../../../../api/order.api";
+import { formatter } from "../../../../helper/helper";
 
 export const OrderDetailModal = (props) => {
-  var formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-
-  const options = [
+   const options = [
     { key: 1, text: OrderStatus.Confirmed, value: OrderStatus.Confirmed },
     {
       key: 2,

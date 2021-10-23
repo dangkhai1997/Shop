@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, Table, Image, Form } from "semantic-ui-react";
 import { useSelector, useDispatch } from "react-redux";
+import { formatter } from "../../../helper/helper";
 
 export const ItemIncart = (props) => {
   const authUser = useSelector((state) => state.authUser);
-
-  var formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-
   const [state, setState] = useState({
     src: "",
   });

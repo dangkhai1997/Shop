@@ -2,13 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { orderApi } from "../../api/order.api";
 import { Grid, Segment,Icon, Label, Menu, Table,Image,Form  } from "semantic-ui-react";
+import { formatter } from "../../helper/helper";
 
 export const TrackingItem = (props) => {
-   var formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-   });
-  
   const [state, setState] = useState({
     item: null,
     index: 0
