@@ -8,7 +8,7 @@ export const shopApi = {
       data: { phoneNumber },
     }),
 
-  signup: ({ name, phoneNumber, image,fileName }) => {
+  signup: ({ name, phoneNumber, image, fileName }) => {
     const formData = new FormData();
     formData.append("Name", name);
     formData.append("PhoneNumber", phoneNumber);

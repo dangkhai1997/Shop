@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Segment, Button, Popup } from "semantic-ui-react";
 import { useSelector, useDispatch } from "react-redux";
-import { Profile1 } from "../../../components/Profile1";
+import { Profile } from "../../../components/Profile";
 import {ShareModal} from '../../../components/ShareModal'
 
 export const CartHeader = (props) => {
@@ -32,7 +32,7 @@ const [state, setState] = useState({
       <Grid columns={2} divided >
     <Grid.Row stretched>
       <Grid.Column>
-        <Profile1 shopInformation={props.shop}></Profile1>
+        <Profile shopInformation={props.shop}></Profile>
       </Grid.Column>
       <Grid.Column>
       <Segment>Cart Link</Segment>

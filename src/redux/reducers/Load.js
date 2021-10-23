@@ -8,25 +8,32 @@ const initialState = {
 export const loadReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.START_LOADING:
+
       return {
         ...state,
-        counter: state.counter + 1,
+        // counter: state.counter + 1,
         loading: true,
       };
 
     case actionTypes.STOP_LOADING:
-      if (state.counter === 1 || state.counter === 0) {
-        return {
-          ...state,
-          counter: 0,
-          loading: false,
-        };
-      }
+      // if (state.counter === 1 || state.counter === 0) {
+      //   return {
+      //     ...state,
+      //     counter: 0,
+      //     loading: false,
+      //   };
+      // }
+
+      // return {
+      //   ...state,
+      //   counter: state.counter - 1,
+      // };
 
       return {
         ...state,
-        counter: state.counter - 1,
+        loading: false,
       };
+
     default:
       return state;
   }

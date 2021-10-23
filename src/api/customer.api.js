@@ -18,5 +18,5 @@ export const customerApi = {
       url: "https://localhost:5001/api/Customer/register",
       data: formData,
     });
-  }
+  },
 };

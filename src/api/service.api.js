@@ -1,7 +1,6 @@
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import * as actions from "../redux";
-import React, { useState } from "react";
+import { store } from "../redux";
 
 const get = async function (url) {
   const response = await axios.get(url);
@@ -19,7 +18,9 @@ const put = async function (url, data) {
 };
 
 const callDelete = async function (url, data) {
-  const response = await axios.delete(url, {data: data}).catch(handleError.bind(this));
+  const response = await axios
+    .delete(url, { data: data })
+    .catch(handleError.bind(this));
   return response.data;
 };
 
@@ -31,24 +32,27 @@ const handleError = ({ response }) => {
 };
 
 export const CALL = async ({ ...endpoint }) => {
-  // const dispatch = useDispatch();
-  // dispatch(actions.startLoading());
+  store.dispatch(actions.startLoading());
   const { url, method, data } = endpoint;
   if (method === "get") {
     const response = await get(url);
-    // dispatch(actions.stopLoading());
+    store.dispatch(actions.stopLoading());
+
     return response;
   } else if (method === "post") {
     const response = await post(url, data);
-    // dispatch(actions.stopLoading());
+    store.dispatch(actions.stopLoading());
+
     return response;
   } else if (method === "put") {
     const response = await put(url, data);
-    // dispatch(actions.stopLoading());
+    store.dispatch(actions.stopLoading());
+
     return response;
   } else if (method === "delete") {
     const response = await callDelete(url, data);
-    // dispatch(actions.stopLoading());
+    store.dispatch(actions.stopLoading());
+
     return response;
   }
 };
