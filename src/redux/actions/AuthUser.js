@@ -3,28 +3,28 @@ import * as actionTypes from "../actionType";
 
 export const authUserStart = () => {
   return {
-    type: actionTypes.AUTH_USER_START
+    type: actionTypes.AUTH_USER_START,
   };
 };
 
-export const loginUserSuccess = ({customerId, name,phoneNumber, avatar }) => {
+export const loginUserSuccess = ({ customerId, name, phoneNumber, avatar }) => {
   return {
     type: actionTypes.USER_LOGIN_SUCCESS,
-    currentUser: {customerId, name,phoneNumber, avatar }
+    currentUser: { customerId, name, phoneNumber, avatar },
   };
 };
 
 export const loginFail = (error) => {
   return {
     type: actionTypes.USER_LOGIN_FAIL,
-    err: error
+    err: error,
   };
 };
 
 export const userLogin = (phoneNumber) => {
   return async (dispatch) => {
     dispatch(authUserStart());
-    const response = await customerApi.login({phoneNumber});
+    const response = await customerApi.login({ phoneNumber });
     if (response?.customerId) {
       dispatch(loginUserSuccess(response));
     } else {
@@ -50,9 +50,19 @@ export const userLogin = (phoneNumber) => {
 export const userSignup = (name, phoneNumber, image, fileName) => {
   return async (dispatch) => {
     dispatch(authUserStart());
-    const response = await customerApi.signup({name, phoneNumber, image,fileName});
-    if (response?.shopId) {
-      dispatch(loginUserSuccess(response));
+    const response = await customerApi.signup({
+      name,
+      phoneNumber,
+      image,
+      fileName,
+    });
+    if (response?.customerId) {
+      const user = await customerApi.login({ phoneNumber });
+      if (user?.customerId) {
+        dispatch(loginUserSuccess(user));
+      } else {
+        dispatch(loginFail(user));
+      }
     } else {
       dispatch(loginFail(response));
     }
@@ -61,7 +71,7 @@ export const userSignup = (name, phoneNumber, image, fileName) => {
 
 export const userLogout = () => {
   return {
-    type: actionTypes.USER_LOGOUT
+    type: actionTypes.USER_LOGOUT,
   };
 };
 

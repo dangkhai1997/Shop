@@ -21,10 +21,17 @@ export const cartApi = {
       data: { customerId, shopId },
     }),
 
-    getCartExist: ({ customerId, shopId }) =>
+  getCartExist: ({ customerId, shopId }) =>
     CALL({
       method: "post",
       url: `https://localhost:5001/api/Cart/exist/shop/customer`,
       data: { customerId, shopId },
+    }),
+
+  addItem: ({ itemId, customerId, cartId }) =>
+    CALL({
+      method: "post",
+      url: `https://localhost:5001/api/Cart/add/item`,
+      data: { itemId, customerId, cartId },
     }),
 };

@@ -62,7 +62,7 @@ export const ItemsByUser = (props) => {
   };
 
   const submitCart = async () => {
-    const deletedItems = getDeletedItems();
+    const deletedItems = getDeletedItems(); 
     const data = {
       items: [...props.itemsInCart?.filter(i=>i.customerId === authUser.user.customerId), ...deletedItems],
       customerId: authUser.user.customerId,
@@ -104,7 +104,7 @@ export const ItemsByUser = (props) => {
       {itemsByUser}
       <div style={{ float: "left" }}>
         <Button primary onClick={submitCart}
-        // disabled={state.isCurrentUserCompleted && props.hostId !== authUser.user.customerId}
+        disabled={state.isCurrentUserCompleted && props.hostId !== authUser.user.customerId}
         >
          {props.hostId !== authUser.user.customerId? 'Submit': 'Submit Order' } 
         </Button>

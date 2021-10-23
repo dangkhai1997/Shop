@@ -37,7 +37,7 @@ export const ItemIncart = (props) => {
     const imageShop = document.getElementById(`shop_img_${props.item?.itemId}`);
     setState({
       ...state,
-      src: imageShop.src,
+      src: imageShop?.src,
     });
   }, [props.item]);
 

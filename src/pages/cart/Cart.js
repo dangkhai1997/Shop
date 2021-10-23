@@ -37,6 +37,26 @@ export const Cart = (props) => {
     fetchInformation(cartId);
   }, []);
 
+  const addToCartFromSignal = ({ customerId, itemId, newAmount }) => {
+    // newAmount alway -1
+    const itemInshop = getItem(itemId);
+    const customerName = "Hard Code name";
+
+    const itemIncart = {
+      price: itemInshop.price,
+      customerId,
+      cartId: cartId,
+      itemId: itemId,
+      isDeleted: false,
+      readyToOrder: false,
+      customerName: customerName,
+      itemName: itemInshop.itemName,
+      itemIsActive: true,
+    };
+
+    addCart(itemIncart);
+  };
+
   const addToCart = (item) => {
     const itemIncart = {
       price: item.price,
@@ -50,6 +70,11 @@ export const Cart = (props) => {
       itemIsActive: true,
     };
 
+    sendUpdateItemAmount({
+      customerId: authUser.user.customerId,
+      itemId: item.itemId,
+      newAmount: -1,
+    });
     addCart(itemIncart);
   };
 
@@ -173,6 +198,16 @@ export const Cart = (props) => {
 
   useEffect(() => {
     if (state.changedItem) {
+      if (state.changedItem.amount === -1) {
+        console.log(state.changedItem);
+        addToCartFromSignal({
+          customerId: state.changedItem.customerId,
+          itemId: state.changedItem.itemId,
+          newAmount: -1,
+        });
+        return;
+      }
+
       updateAmountCart({
         ...state.changedItem,
         newAmount: state.changedItem.amount,
@@ -193,6 +228,7 @@ export const Cart = (props) => {
 
     const receiveUpdateItemAmount = (data) => {
       if (data.customerId !== authUser.user.customerId) {
+        debugger
         setState((prevState) => ({
           ...prevState,
           changedItem: data,
@@ -235,26 +271,16 @@ export const Cart = (props) => {
       });
   }, []);
 
-  const addToCartFromSignal = (item) => {
-    const price = getPrice(item.itemId);
-
-    const itemIncart = {
-      price: price,
-      customerId: item.customerId,
-      cartId: cartId,
-      itemId: item.itemId,
-    };
-
-    console.log(itemIncart);
-
-    addToCart(itemIncart);
-  };
-
   const getPrice = (itemId) => {
     return (
       state.cartInformation?.shop.items.find((i) => i.itemId === itemId)
         ?.price || 0
     );
+  };
+
+  const getItem = (itemId) => {
+    debugger
+    return state.cartInformation?.shop.items.find((i) => i.itemId === itemId);
   };
 
   const orderCart = () => {
