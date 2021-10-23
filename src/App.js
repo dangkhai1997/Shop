@@ -9,11 +9,9 @@ export const App = () => {
   const load = useSelector((state) => state.load);
 
   return (
-    <>
+    <div className="App">
       <Loading active={load?.loading} />
-      <div className="App">
-        <Routes />
-      </div>
-    </>
+      <Routes />
+    </div>
   );
 };
