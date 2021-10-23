@@ -46,6 +46,7 @@ export const Orders = (props) => {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>#</Table.HeaderCell>
+            <Table.HeaderCell>Order ID</Table.HeaderCell>
             <Table.HeaderCell>Customer Name</Table.HeaderCell>
             <Table.HeaderCell>Customer Phone</Table.HeaderCell>
             <Table.HeaderCell>Total </Table.HeaderCell>

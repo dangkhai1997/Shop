@@ -101,6 +101,6 @@ export const DeliveryStatus = (props) => {
           </div>
         </div>
       </div>
-    </>
+   </>
   );
 };

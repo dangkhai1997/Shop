@@ -29,7 +29,7 @@ export const TrackingHeader = (props) => {
             </Grid.Row>
             <Grid.Row>
             <Grid.Column>
-               <Segment>phone number: { state.information?.phongNumberOfShop}</Segment>
+               <Segment>phone number: { state.information?.phoneNumberOfShop}</Segment>
             </Grid.Column>
             </Grid.Row>
         </Grid>

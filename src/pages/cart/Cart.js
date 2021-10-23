@@ -5,7 +5,7 @@ import { ShopItems } from "./cartComponents/ShopItems";
 import { useSelector, useDispatch } from "react-redux";
 import { ItemsByUser } from "./cartComponents/ItemsByUser";
 import { LogLevel, HubConnectionBuilder } from "@microsoft/signalr";
-import { Button, TextArea, Image, Modal } from "semantic-ui-react";
+import { Button, TextArea, Image, Modal, Form } from "semantic-ui-react";
 import { orderApi } from "../../api/order.api";
 import { useHistory } from "react-router-dom";
 
@@ -228,7 +228,7 @@ export const Cart = (props) => {
 
     const receiveUpdateItemAmount = (data) => {
       if (data.customerId !== authUser.user.customerId) {
-        debugger
+        debugger;
         setState((prevState) => ({
           ...prevState,
           changedItem: data,
@@ -279,7 +279,7 @@ export const Cart = (props) => {
   };
 
   const getItem = (itemId) => {
-    debugger
+    debugger;
     return state.cartInformation?.shop.items.find((i) => i.itemId === itemId);
   };
 
@@ -339,11 +339,13 @@ export const Cart = (props) => {
               `submit successfully, please wait until the cart's host completed`
             ) : (
               <>
-                Enter your deliveryInformation:
-                <TextArea
-                  placeholder="deliveryInformation"
-                  onChange={handleChange}
-                />
+                <Form>
+                  Enter your delivery Information:
+                  <TextArea
+                    placeholder="delivery information"
+                    onChange={handleChange}
+                  />
+                </Form>
               </>
             )}
           </Modal.Description>
