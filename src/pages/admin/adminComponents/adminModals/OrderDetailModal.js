@@ -134,8 +134,6 @@ export const OrderDetailModal = (props) => {
           </Table.Header>
           <Table.Body>{items}</Table.Body>
           <Table.Row >
-            {/* <Table.Cell></Table.Cell>
-            <Table.Cell></Table.Cell> */}
             <Table.Cell  colspan="3"></Table.Cell>
             <Table.Cell>
             Total: {formatter.format(state.total)}

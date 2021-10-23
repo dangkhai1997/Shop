@@ -65,9 +65,16 @@ export const TrackingItems = (props) => {
           </Table.Row>
         </Table.Header>
         {listItems}
+
+        <Table.Row >
+            <Table.Cell  colspan="3"></Table.Cell>
+            <Table.Cell>
+            Total: {formatter.format(state.total)}
+            </Table.Cell>
+          </Table.Row>
+
       </Table>
       <br></br>
-      Total: {formatter.format(state.total)}
     </>
   );
 };
