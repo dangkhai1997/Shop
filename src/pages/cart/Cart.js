@@ -26,12 +26,12 @@ export const Cart = (props) => {
     setState({
       ...state,
       cartInformation: cartInformation,
+      changeItem: null,
     });
   };
 
   useEffect(() => {
     fetchInformation(cartId);
-    startCons();
   }, []);
 
   const addToCart = (item) => {
@@ -51,8 +51,6 @@ export const Cart = (props) => {
   };
 
   const addCart = (itemIncart) => {
-    console.log(state.cartInformation);
-
     const isExistUserCart = state.cartInformation?.itemsInCart.find(
       (c) =>
         c.itemId === itemIncart.itemId && c.customerId === itemIncart.customerId
@@ -142,32 +140,63 @@ export const Cart = (props) => {
     });
   };
 
-  const startCons = async () => {
-    const connection = new HubConnectionBuilder()
-      .withUrl(`https://localhost:5001/hubs/cart?cart=${cartId}`, {
-        withCredentials: false,
-      })
-      .configureLogging(LogLevel.Information)
-      .build();
-
-    try {
-      await connection.start();
-    } catch (e) {
-      console.log(e);
+  useEffect(() => {
+    if(state.changeItem && state.changeItem?.items.length> 0){
+      const items = state.changeItem?.items;
+      items.forEach(item => {
+        const oldItem =  state.cartInformation?.itemsInCart?.find(c=>c.customerId === state.changeItem.customerId && c.itemId === item.itemId);
+        if(oldItem){
+          oldItem.amount = item.amount;
+          oldItem.isDeleted = item.isDeleted;
+          oldItem.readyToOrder = true;
+        }
+      });
     }
+  }, [state.changeItem]);
 
-    connection.on("AddItemToCart", (item) => {
+  useEffect(async () => {
+    const addToCartHandler = (item) => {
       console.log(state.cartInformation);
-      // addToCartFromSignal(item);
-      //   setState({
-      //   ...state,
-      //   test: item,
-      // });
-    });
-    connection.on("UnsubmitItems", (message) => {
-      console.log("you just unsubmtited cart id: " + message);
-    });
-  };
+    };
+
+    const submitItemsHandler = (item) => {
+      if (item.customerId !== authUser.user.customerId) {
+        setState((prevState) => ({
+          cartInformation: prevState.cartInformation,
+          changeItem: item,
+        }));
+      }
+    };
+
+    const createHubConnection = async () => {
+      const hubConnect = new HubConnectionBuilder()
+        .withUrl(`https://localhost:5001/hubs/cart?cart=${cartId}`, {
+          withCredentials: false,
+        })
+        .configureLogging(LogLevel.Information)
+        .build();
+      try {
+        await hubConnect.start();
+        console.log("Connection successful!");
+      } catch (err) {
+        alert(err);
+        return Promise.reject(err);
+      }
+
+      hubConnect.on("AddItemToCart", addToCartHandler);
+      hubConnect.on("SubmitItems", submitItemsHandler);
+      
+      return hubConnect;
+    };
+
+    const hubConnect = await createHubConnection();
+
+    return () =>
+      hubConnect.then((hubConnect) => {
+        hubConnect.off("AddItemToCart", addToCartHandler);
+        hubConnect.off("SubmitItems", submitItemsHandler);
+      });
+  }, []);
 
   const addToCartFromSignal = (item) => {
     const price = getPrice(item.itemId);
@@ -211,10 +240,10 @@ export const Cart = (props) => {
       deliveryInformation: state.deliveryInformation,
     });
 
-    if(order.isSuccess){
+    if (order.isSuccess) {
       history.push(`/tracking/${order.orderId}`);
     }
-    
+
     setState({
       ...state,
       isShowModal: false,
@@ -271,7 +300,7 @@ export const Cart = (props) => {
             cartId={cartId}
             deletedItems={state.deletedItems}
             orderCart={orderCart}
-            hostId= {state.cartInformation?.customerId}
+            hostId={state.cartInformation?.customerId}
           ></ItemsByUser>
         </div>
       </div>

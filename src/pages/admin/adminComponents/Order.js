@@ -39,12 +39,13 @@ export const Order = (props) => {
 
   return (
     <>
-      <OrderDetailModal
+      {state.isShowModal && <OrderDetailModal
         isShowModal={state.isShowModal}
         closeModal={closeModal}
         item={props.item}
         time={getTime()}
       ></OrderDetailModal>
+}
       <Table.Row>
         <Table.Cell>{props.index+1}</Table.Cell>
         <Table.Cell>{props.item?.customerName}</Table.Cell>

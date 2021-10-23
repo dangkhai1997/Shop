@@ -104,7 +104,8 @@ export const ItemsByUser = (props) => {
       {itemsByUser}
       <div style={{ float: "left" }}>
         <Button primary onClick={submitCart}
-        disabled={state.isCurrentUserCompleted && props.hostId !== authUser.user.customerId}>
+        // disabled={state.isCurrentUserCompleted && props.hostId !== authUser.user.customerId}
+        >
          {props.hostId !== authUser.user.customerId? 'Submit': 'Submit Order' } 
         </Button>
         Total: {formatter.format(state.total)}

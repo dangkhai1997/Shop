@@ -7,6 +7,8 @@ import {
   Grid,
   Segment,
   Dropdown,
+  Label,
+  Table,
 } from "semantic-ui-react";
 import { itemApi } from "../../../../api/item.api";
 import { useSelector, useDispatch } from "react-redux";
@@ -14,6 +16,11 @@ import { OrderStatus } from "../../../../constants/order.constants";
 import { orderApi } from "../../../../api/order.api";
 
 export const OrderDetailModal = (props) => {
+  var formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
   const options = [
     { key: 1, text: OrderStatus.Confirmed, value: OrderStatus.Confirmed },
     {
@@ -32,12 +39,17 @@ export const OrderDetailModal = (props) => {
   const auth = useSelector((state) => state.auth);
   const [state, setState] = useState({
     item: null,
+    total: 0,
   });
 
   useEffect(() => {
+    const total = props.item?.itemsInCart?.map((i) => i.price * i.amount)
+    .reduce((a, b) => a + b);
+
     setState({
       ...state,
       item: props.item,
+      total: total,
     });
   }, [props.item]);
 
@@ -48,7 +60,7 @@ export const OrderDetailModal = (props) => {
     });
   };
 
-  const updateStatus = async() => {
+  const updateStatus = async () => {
     const payload = {
       orderId: state.item.orderId,
       orderStatus: state.item.status,
@@ -59,7 +71,7 @@ export const OrderDetailModal = (props) => {
     props.closeModal();
   };
 
-  const cancelOrder = async() => {
+  const cancelOrder = async () => {
     const payload = {
       orderId: "",
       customerId: state.item.customerId,
@@ -67,14 +79,22 @@ export const OrderDetailModal = (props) => {
     await orderApi.cancelOrder(payload);
     props.closeModal();
   };
-  
+
+  const items = props.item?.itemsInCart?.map((item, index) => (
+    <Table.Row key={index}>
+      <Table.Cell>{item.itemName}</Table.Cell>
+      <Table.Cell>{formatter.format(item.price)}</Table.Cell>
+      <Table.Cell>{item.amount}</Table.Cell>
+      <Table.Cell>{formatter.format(item.price * item.amount)}</Table.Cell>
+    </Table.Row>
+  ));
 
   return (
     <Modal onClose={() => props.closeModal()} open={props.isShowModal}>
       <Modal.Header>View Order</Modal.Header>
       <>
         <Grid columns={3}>
-          <Grid.Row stretched>
+          <Grid.Row stretched style={{fontSize:'1.5rem',fontWeight: '600'}}>
             <Grid.Column>
               Order Number #12345
               <br />
@@ -84,19 +104,45 @@ export const OrderDetailModal = (props) => {
             </Grid.Column>
 
             <Grid.Column>
-              <Segment>order stt: {state.item?.status}</Segment>
-              <Segment>order time: {props.time}</Segment>
+              <Segment>Order status: {state.item?.status}</Segment>
+              <Segment>
+                Delivery Information: {state.item?.deliveryInformation}
+              </Segment>
             </Grid.Column>
             <Grid.Column>
               <Dropdown
+                style={{ maxHeight: "40%" }}
                 clearable
                 options={options}
                 selection
                 onChange={hanldeChangeStatus}
               />
+              <Segment style={{ maxHeight: "40%", marginTop: "2rem" }}>
+                order time: {props.time}
+              </Segment>
             </Grid.Column>
           </Grid.Row>
         </Grid>
+        <Table celled>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Item</Table.HeaderCell>
+              <Table.HeaderCell>Price</Table.HeaderCell>
+              <Table.HeaderCell>Qty</Table.HeaderCell>
+              <Table.HeaderCell>Sub Total</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>{items}</Table.Body>
+          <Table.Row >
+            {/* <Table.Cell></Table.Cell>
+            <Table.Cell></Table.Cell> */}
+            <Table.Cell  colspan="3"></Table.Cell>
+            <Table.Cell>
+            Total: {formatter.format(state.total)}
+            </Table.Cell>
+          </Table.Row>
+        </Table>
+        
       </>
       <br />
       <Modal.Actions>
