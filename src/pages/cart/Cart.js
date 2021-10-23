@@ -19,15 +19,18 @@ export const Cart = (props) => {
     deletedItems: [],
     isShowModal: false,
     deliveryInformation: "",
+    hub: null,
+    submitedItem: null,
   });
 
   const fetchInformation = async (cartId) => {
     const cartInformation = await cartApi.getCart({ cartId });
-    setState({
-      ...state,
+
+    setState((prevState) => ({
+      ...prevState,
       cartInformation: cartInformation,
-      changeItem: null,
-    });
+      submitedItem: null,
+    }));
   };
 
   useEffect(() => {
@@ -98,10 +101,16 @@ export const Cart = (props) => {
     });
   };
 
-  const updateAmountCart = ({ customerId, itemId, newAmount }) => {
+  const updateAmountCart = ({
+    customerId,
+    itemId,
+    newAmount,
+    isUpdateFromSignal,
+  }) => {
     if (newAmount === "") {
       return;
     }
+
     const cartInformation = { ...state.cartInformation };
     const deletedItems = [...state.deletedItems];
 
@@ -111,6 +120,10 @@ export const Cart = (props) => {
     if (!oldItem) {
       return;
     }
+
+    // Send signal update UpdateItemAmount
+    !isUpdateFromSignal &&
+      sendUpdateItemAmount({ customerId, itemId, newAmount });
 
     if (newAmount > 0) {
       oldItem.amount = parseInt(newAmount);
@@ -141,29 +154,48 @@ export const Cart = (props) => {
   };
 
   useEffect(() => {
-    if(state.changeItem && state.changeItem?.items.length> 0){
-      const items = state.changeItem?.items;
-      items.forEach(item => {
-        const oldItem =  state.cartInformation?.itemsInCart?.find(c=>c.customerId === state.changeItem.customerId && c.itemId === item.itemId);
-        if(oldItem){
+    if (state.submitedItem && state.submitedItem?.items.length > 0) {
+      const items = state.submitedItem?.items;
+      items.forEach((item) => {
+        const oldItem = state.cartInformation?.itemsInCart?.find(
+          (c) =>
+            c.customerId === state.submitedItem.customerId &&
+            c.itemId === item.itemId
+        );
+        if (oldItem) {
           oldItem.amount = item.amount;
           oldItem.isDeleted = item.isDeleted;
           oldItem.readyToOrder = true;
         }
       });
     }
-  }, [state.changeItem]);
+  }, [state.submitedItem]);
+
+  useEffect(() => {
+    if (state.changedItem) {
+      updateAmountCart({
+        ...state.changedItem,
+        newAmount: state.changedItem.amount,
+        isUpdateFromSignal: true,
+      });
+    }
+  }, [state.changedItem]);
 
   useEffect(async () => {
-    const addToCartHandler = (item) => {
-      console.log(state.cartInformation);
-    };
-
     const submitItemsHandler = (item) => {
       if (item.customerId !== authUser.user.customerId) {
         setState((prevState) => ({
-          cartInformation: prevState.cartInformation,
-          changeItem: item,
+          ...prevState,
+          submitedItem: item,
+        }));
+      }
+    };
+
+    const receiveUpdateItemAmount = (data) => {
+      if (data.customerId !== authUser.user.customerId) {
+        setState((prevState) => ({
+          ...prevState,
+          changedItem: data,
         }));
       }
     };
@@ -183,18 +215,23 @@ export const Cart = (props) => {
         return Promise.reject(err);
       }
 
-      hubConnect.on("AddItemToCart", addToCartHandler);
       hubConnect.on("SubmitItems", submitItemsHandler);
-      
+      hubConnect.on("UpdateItemAmount", receiveUpdateItemAmount);
+
       return hubConnect;
     };
 
     const hubConnect = await createHubConnection();
 
+    setState((prevState) => ({
+      ...prevState,
+      hub: hubConnect,
+    }));
+
     return () =>
       hubConnect.then((hubConnect) => {
-        hubConnect.off("AddItemToCart", addToCartHandler);
         hubConnect.off("SubmitItems", submitItemsHandler);
+        hubConnect.off("UpdateItemAmount", receiveUpdateItemAmount);
       });
   }, []);
 
@@ -254,6 +291,15 @@ export const Cart = (props) => {
     setState({
       ...state,
       deliveryInformation: e.target.value,
+    });
+  };
+
+  const sendUpdateItemAmount = ({ customerId, itemId, newAmount }) => {
+    state.hub?.invoke("UpdateItemAmount", {
+      customerId: customerId,
+      itemId: itemId,
+      cartId: cartId,
+      amount: parseInt(newAmount),
     });
   };
 
