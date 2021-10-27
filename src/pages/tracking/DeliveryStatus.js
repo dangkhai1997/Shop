@@ -79,7 +79,7 @@ export const DeliveryStatus = (props) => {
                         className={`step0 ${isActive(2) && "active"}`}
                         id="step2"
                       >
-                        Send To Kitchen
+                        Sent To Kitchen
                       </li>
                       <li
                         className={`step0 ${isActive(3) && "active"}`}

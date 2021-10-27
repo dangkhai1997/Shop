@@ -21,8 +21,8 @@ export const OrderDetailModal = (props) => {
     { key: 1, text: OrderStatus.Confirmed, value: OrderStatus.Confirmed },
     {
       key: 2,
-      text: OrderStatus.SendToKitchen,
-      value: OrderStatus.SendToKitchen,
+      text: OrderStatus.SentToKitchen,
+      value: OrderStatus.SentToKitchen,
     },
     {
       key: 3,

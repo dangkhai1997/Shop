@@ -37,10 +37,9 @@ export const Cart = (props) => {
     fetchInformation(cartId);
   }, []);
 
-  const addToCartFromSignal = ({ customerId, itemId, newAmount }) => {
+  const addToCartFromSignal = ({ customerId, itemId, newAmount,customerName }) => {
     // newAmount alway -1
     const itemInshop = getItem(itemId);
-    const customerName = "Hard Code name";
 
     const itemIncart = {
       price: itemInshop.price,
@@ -49,7 +48,7 @@ export const Cart = (props) => {
       itemId: itemId,
       isDeleted: false,
       readyToOrder: false,
-      customerName: customerName,
+      customerName,
       itemName: itemInshop.itemName,
       itemIsActive: true,
     };
@@ -72,6 +71,7 @@ export const Cart = (props) => {
 
     sendUpdateItemAmount({
       customerId: authUser.user.customerId,
+      customerName: authUser.user.name,
       itemId: item.itemId,
       newAmount: -1,
     });
@@ -204,6 +204,7 @@ export const Cart = (props) => {
           customerId: state.changedItem.customerId,
           itemId: state.changedItem.itemId,
           newAmount: -1,
+          customerName: state.changedItem.customerName,
         });
         return;
       }
@@ -320,9 +321,10 @@ export const Cart = (props) => {
     });
   };
 
-  const sendUpdateItemAmount = ({ customerId, itemId, newAmount }) => {
+  const sendUpdateItemAmount = ({ customerId, itemId, newAmount,customerName }) => {
     state.hub?.invoke("UpdateItemAmount", {
       customerId: customerId,
+      customerName,
       itemId: itemId,
       cartId: cartId,
       amount: parseInt(newAmount),

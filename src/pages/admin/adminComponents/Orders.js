@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Icon, Label, Menu, Table } from "semantic-ui-react";
 import { Order } from "./Order";
 import { UpdateItemModal } from "./adminModals/UpdateItemModal";
-import { DeleteModal } from "./adminModals/DeleteModal";
-import { Button } from "semantic-ui-react";
 
 export const Orders = (props) => {
   const [state, setState] = useState({

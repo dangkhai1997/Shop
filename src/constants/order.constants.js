@@ -1,9 +1,9 @@
 export const OrderStatus = {
     Cancelled: "Cancelled",
     Confirmed: "Confirmed",
-    SendToKitchen: "Send To Kitchen",
+    SentToKitchen: "Sent To Kitchen",
     ReadyForPickup: "Ready for Pickup",
     Delivered: "Delivered",
 };
 
-export const OrderIndex = [OrderStatus.Cancelled,OrderStatus.Confirmed,OrderStatus.SendToKitchen,OrderStatus.ReadyForPickup,OrderStatus.Delivered]
+export const OrderIndex = [OrderStatus.Cancelled,OrderStatus.Confirmed,OrderStatus.SentToKitchen,OrderStatus.ReadyForPickup,OrderStatus.Delivered]

@@ -13,6 +13,7 @@ export const Admin = (props) => {
     shopInformation: null,
     isMenu: true,
     orders: [],
+    addedOrder: null
   });
 
   const fetchInformation = async (shopId) => {
@@ -66,10 +67,20 @@ export const Admin = (props) => {
     }
 
     connection.on("NewOrder", (response) => {
+      
       console.log(response);
-      console.log(state.orders);
+      setState((prevState) => ({
+        ...prevState,
+        addedOrder: response,
+      }));
     });
   };
+
+  useEffect(() => {
+    if (state.addedOrder && state.addedOrder.orderId) {
+      state.orders.push(state.addedOrder);
+    }
+  }, [state.addedOrder]);
 
   return (
     <div>
