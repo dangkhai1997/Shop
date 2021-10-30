@@ -8,6 +8,7 @@ import { LogLevel, HubConnectionBuilder } from "@microsoft/signalr";
 import { Button, TextArea, Image, Modal, Form } from "semantic-ui-react";
 import { orderApi } from "../../api/order.api";
 import { useHistory } from "react-router-dom";
+import { Hub } from "../../constants/hub.enpoint.constants";
 
 export const Cart = (props) => {
   const history = useHistory();
@@ -239,7 +240,7 @@ export const Cart = (props) => {
 
     const createHubConnection = async () => {
       const hubConnect = new HubConnectionBuilder()
-        .withUrl(`https://localhost:5001/hubs/cart?cart=${cartId}`, {
+        .withUrl(`${Hub.Cart}${cartId}`, {
           withCredentials: false,
         })
         .configureLogging(LogLevel.Information)

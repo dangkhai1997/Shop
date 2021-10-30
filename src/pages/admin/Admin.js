@@ -5,6 +5,7 @@ import { shopApi } from "../../api/shop.api";
 import { Orders } from "./adminComponents/Orders";
 import { orderApi } from "../../api/order.api";
 import { LogLevel, HubConnectionBuilder } from "@microsoft/signalr";
+import { Hub } from "../../constants/hub.enpoint.constants";
 
 export const Admin = (props) => {
   const shopId = props.location.pathname.split("/")[2] || "";
@@ -13,7 +14,7 @@ export const Admin = (props) => {
     shopInformation: null,
     isMenu: true,
     orders: [],
-    addedOrder: null
+    addedOrder: null,
   });
 
   const fetchInformation = async (shopId) => {
@@ -52,7 +53,7 @@ export const Admin = (props) => {
 
   const startCons = async () => {
     const shopId = window.location.href.split("/")[4];
-    const url = `https://localhost:5001/hubs/shop?shop=${shopId}`;
+    const url = `${Hub.Shop}${shopId}`;
     const connection = new HubConnectionBuilder()
       .withUrl(url, {
         withCredentials: false,
@@ -67,8 +68,6 @@ export const Admin = (props) => {
     }
 
     connection.on("NewOrder", (response) => {
-      
-      console.log(response);
       setState((prevState) => ({
         ...prevState,
         addedOrder: response,
@@ -78,7 +77,12 @@ export const Admin = (props) => {
 
   useEffect(() => {
     if (state.addedOrder && state.addedOrder.orderId) {
-      state.orders.push(state.addedOrder);
+      const orders = [...state.orders];
+      orders.push(state.addedOrder);
+      setState((prevState) => ({
+        ...prevState,
+        orders: orders,
+      }));
     }
   }, [state.addedOrder]);
 

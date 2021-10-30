@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { OrderIndex, OrderStatus } from "../../constants/order.constants";
 import { LogLevel, HubConnectionBuilder } from "@microsoft/signalr";
 import "./DeliveryStatus.css";
+import { Hub } from "../../constants/hub.enpoint.constants";
 export const DeliveryStatus = (props) => {
   const [state, setState] = useState({
     status: null,
@@ -31,7 +32,7 @@ export const DeliveryStatus = (props) => {
 
   const startCons = async () => {
     const orderId = window.location.href.split("/")[4];
-    const url = `https://localhost:5001/hubs/order?order=${orderId}`;
+    const url = `${Hub.Order}${orderId}`;
     console.log(url);
     const connection = new HubConnectionBuilder()
       .withUrl(url, {
