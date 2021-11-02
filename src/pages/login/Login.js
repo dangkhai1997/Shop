@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../redux";
-import { Button, Form, Image, Modal } from "semantic-ui-react";
+import { Button, Form, Image, Modal, Input } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
+import './Login.css'
 export const Login = (props) => {
   const [state, setState] = useState({
     name: "",
@@ -14,6 +15,12 @@ export const Login = (props) => {
     notify: "",
     isSubmit: false,
     fileName: "",
+    validate: {
+      isError: false,
+      isErrorImage: false,
+      isErrorPhoneNumber: false,
+      isErrorName: false,
+    },
   });
 
   const auth = useSelector((state) => state.auth);
@@ -47,13 +54,53 @@ export const Login = (props) => {
     });
   }, [auth]);
 
+  useEffect(() => {
+    const validate = {
+      isError: false,
+      isErrorImage: false,
+      isErrorPhoneNumber: false,
+      isErrorName: false,
+    };
+
+    if (state.name === "" && !state.isLoginPage) {
+      validate.isErrorName = true;
+    }
+
+    if (!state.image && !state.isLoginPage) {
+      validate.isErrorImage = true;
+    }
+
+    if (state.phoneNumber === "") {
+      validate.isErrorPhoneNumber = true;
+    } else {
+      validate.isErrorPhoneNumber = !new RegExp("^((0)[0-9]{9})$").test(
+        state.phoneNumber
+      );
+    }
+
+    validate.isError =
+      validate.isErrorName ||
+      validate.isErrorImage ||
+      validate.isErrorPhoneNumber;
+    setState({
+      ...state,
+      validate: validate,
+    });
+  }, [state.name, state.phoneNumber, state.image]);
+
   const dispatch = useDispatch();
   const submitHandler = (event) => {
     event.preventDefault();
+
     setState({
       ...state,
       isSubmit: true,
     });
+
+    if (state.validate.isError) {
+      return;
+    }
+
     state.isLoginPage
       ? dispatch(actions.login(state.phoneNumber))
       : dispatch(
@@ -104,6 +151,7 @@ export const Login = (props) => {
     setState({
       ...state,
       isLoginPage: !state.isLoginPage,
+      isSubmit: false,
     });
   };
 
@@ -125,40 +173,70 @@ export const Login = (props) => {
       <a href="javascript.void(0)" onClick={changePage}>
         {state.isLoginPage ? "Register" : "Login"}
       </a>
+
+      {state.isSubmit && state.validate.isError ? (
+        <div style={{ color: "red" }}>
+          Please correct errors before submitting this form!
+        </div>
+      ) : (
+        ""
+      )}
+
       <Form onSubmit={submitHandler}>
         {!state.isLoginPage && (
-          <Form.Field>
-            <label>Shop Name</label>
-
-            <input
-              placeholder="Shop Name"
-              onChange={handleChange}
-              name="name"
-            />
-          </Form.Field>
-        )}
-        <Form.Field>
-          <label>Phone Number</label>
-          <input
-            placeholder="Phone Number"
+          <Form.Field
+            id="form-input-control-error-email"
+            control={Input}
+            label="Shop Name"
+            placeholder="Shop Name"
             onChange={handleChange}
-            name="phoneNumber"
+            name="name"
+            error={
+              state.isSubmit &&
+              state.validate.isErrorName && {
+                content: "Please enter shop name",
+                pointing: "below",
+              }
+            }
           />
-        </Form.Field>
+        )}
+        <Form.Field
+          id="form-input-control-error-email"
+          control={Input}
+          label="Phone Numbe"
+          placeholder="Phone Numbe"
+          onChange={handleChange}
+          name="phoneNumber"
+          error={
+            state.isSubmit &&
+            state.validate.isErrorPhoneNumber && {
+              content: "Please enter valid number: 10 digits and start with 0!",
+              pointing: "below",
+            }
+          }
+        />
         {!state.isLoginPage && (
           <>
             <Image src={state.url} size="small" style={{ margin: "0 auto" }} />
             <div style={{ maxWidth: "250px", margin: "0 auto" }}>
-              <input
+              <Form.Field
                 type="file"
+                control={Input}
                 id="myFile"
+                placeholder="Phone Numbe"
                 onChange={onFileChange}
                 name="image"
+                error={
+                  state.isSubmit &&
+                  state.validate.isErrorImage && {
+                    content: "Please choose file to upload",
+                    pointing: "below",
+                  }
+                }
               />
             </div>
           </>
         )}
-
         <div>
           <Button type="submit">{!state.isLoginPage ? "Save" : "Login"}</Button>
         </div>

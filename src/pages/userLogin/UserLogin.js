@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../redux";
-import { Button, Form,Image } from "semantic-ui-react";
+import { Button, Form, Image } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
+
 export const UserLogin = (props) => {
   const authUser = useSelector((state) => state.authUser);
 
@@ -11,19 +12,17 @@ export const UserLogin = (props) => {
     phoneNumber: "",
     url: "/images/default.png",
     image: null,
-    fileName: '',
+    fileName: "",
   });
-
-  const history = useHistory();
 
   const dispatch = useDispatch();
   const submitHandler = (event) => {
     event.preventDefault();
-    setState({
-      ...state,
-      isSubmit: true,
-    });
-      
+
+    if (!isValid()) {
+      return;
+    }
+
     state.isLoginPage
       ? dispatch(actions.userLogin(state.phoneNumber))
       : dispatch(
@@ -36,19 +35,35 @@ export const UserLogin = (props) => {
         );
   };
 
+  const isValid = () => {
+    let isValid = false;
+    if (state.isLoginPage) {
+      isValid = new RegExp("^((0)[0-9]{9})$").test(state.phoneNumber);
+    } else {
+      isValid =
+        state.name !== "" &&
+        state.image &&
+        new RegExp("^((0)[0-9]{9})$").test(state.phoneNumber);
+    }
+
+    if(!isValid){
+      dispatch(actions.startToast('Please enter name, phone number, image !'));
+    }
+    return isValid;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setState({
       ...state,
       [name]: value,
     });
-    };
-    
-    useEffect(() => {
+  };
+
+  useEffect(() => {
     if (authUser.user.customerId) {
       return;
     }
-
   }, [authUser]);
 
   const changePage = (e) => {
@@ -97,7 +112,7 @@ export const UserLogin = (props) => {
             name="phoneNumber"
           />
         </Form.Field>
-{!state.isLoginPage && (
+        {!state.isLoginPage && (
           <>
             <Image src={state.url} size="small" style={{ margin: "0 auto" }} />
             <div style={{ maxWidth: "250px", margin: "0 auto" }}>

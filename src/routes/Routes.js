@@ -1,7 +1,17 @@
 import React from "react";
 import { Switch } from "react-router-dom";
 import Route from "./RouteWrapper";
-import { Login, Admin, UserLogin, Cart, Tracking, Shop } from "../pages";
+import {
+  Login,
+  Admin,
+  UserLogin,
+  Cart,
+  Tracking,
+  Shop,
+  NotFound,
+  Home,
+  AllShop
+} from "../pages";
 export const Routes = () => {
   return (
     <Switch>
@@ -11,6 +21,9 @@ export const Routes = () => {
       <Route path="/cart" component={Cart} />
       <Route path="/tracking" component={Tracking} />
       <Route path="/shop" component={Shop} />
+      <Route path="/shops" component={AllShop} />
+      <Route exact path="/" component={Home} />
+      <Route component={NotFound} />
     </Switch>
   );
 };

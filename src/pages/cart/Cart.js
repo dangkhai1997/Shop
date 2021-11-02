@@ -38,7 +38,12 @@ export const Cart = (props) => {
     fetchInformation(cartId);
   }, []);
 
-  const addToCartFromSignal = ({ customerId, itemId, newAmount,customerName }) => {
+  const addToCartFromSignal = ({
+    customerId,
+    itemId,
+    newAmount,
+    customerName,
+  }) => {
     // newAmount alway -1
     const itemInshop = getItem(itemId);
 
@@ -200,7 +205,6 @@ export const Cart = (props) => {
   useEffect(() => {
     if (state.changedItem) {
       if (state.changedItem.amount === -1) {
-        console.log(state.changedItem);
         addToCartFromSignal({
           customerId: state.changedItem.customerId,
           itemId: state.changedItem.itemId,
@@ -322,7 +326,12 @@ export const Cart = (props) => {
     });
   };
 
-  const sendUpdateItemAmount = ({ customerId, itemId, newAmount,customerName }) => {
+  const sendUpdateItemAmount = ({
+    customerId,
+    itemId,
+    newAmount,
+    customerName,
+  }) => {
     state.hub?.invoke("UpdateItemAmount", {
       customerId: customerId,
       customerName,

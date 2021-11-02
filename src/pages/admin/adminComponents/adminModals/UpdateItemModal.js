@@ -2,9 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Button, Form, Image, Modal } from "semantic-ui-react";
 import { itemApi } from "../../../../api/item.api";
 import { useSelector, useDispatch } from "react-redux";
+import * as actions from "../../../../redux";
+
 var CurrencyFormat = require("react-currency-format");
 
 export const UpdateItemModal = (props) => {
+  const dispatch = useDispatch();
+
   const auth = useSelector((state) => state.auth);
   const [state, setState] = useState({
     itemId: "",
@@ -56,6 +60,11 @@ export const UpdateItemModal = (props) => {
   };
 
   const saveItem = () => {
+    if(state.name === '' || state.price === '' || !state.newImage){
+      dispatch(actions.startToast('Please enter name, price, image !'));
+      return;
+    }
+
     state.itemId !== "" ? updateItem() : insertItem();
   };
 
@@ -64,7 +73,7 @@ export const UpdateItemModal = (props) => {
       shopId: auth.user.shopId,
       itemId: state.itemId,
       name: state.name,
-      price: parseFloat(state.price.replace("$", "").replaceAll(",", "")),
+      price: parseFloat(`${state.price}`.replace("$", "").replaceAll(",", "")),
       image: state.newImage,
       fileName: state.filename,
     };

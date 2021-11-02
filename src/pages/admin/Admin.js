@@ -63,9 +63,7 @@ export const Admin = (props) => {
 
     try {
       await connection.start();
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
 
     connection.on("NewOrder", (response) => {
       setState((prevState) => ({

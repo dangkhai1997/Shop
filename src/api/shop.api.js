@@ -26,4 +26,10 @@ export const shopApi = {
       method: "get",
       url: `https://localhost:5001/api/Shop/${id}`,
     }),
+
+    getAllShop: () =>
+    CALL({
+      method: "get",
+      url: `https://localhost:5001/api/Shop/all`,
+    }),
 };

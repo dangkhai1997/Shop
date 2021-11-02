@@ -4,3 +4,6 @@ export * from "./userLogin";
 export * from "./cart";
 export * from "./tracking";
 export * from "./shop";
+export * from "./notFound";
+export * from "./home";
+export * from "./allShop";

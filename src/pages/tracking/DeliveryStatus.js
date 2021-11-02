@@ -33,7 +33,6 @@ export const DeliveryStatus = (props) => {
   const startCons = async () => {
     const orderId = window.location.href.split("/")[4];
     const url = `${Hub.Order}${orderId}`;
-    console.log(url);
     const connection = new HubConnectionBuilder()
       .withUrl(url, {
         withCredentials: false,
@@ -48,7 +47,6 @@ export const DeliveryStatus = (props) => {
     }
 
     connection.on("ChangeOrderStatus", (response) => {
-      console.log(response);
       if (response && response?.orderId === orderId) {
         setState({
           ...state,
@@ -102,6 +100,6 @@ export const DeliveryStatus = (props) => {
           </div>
         </div>
       </div>
-   </>
+    </>
   );
 };
