@@ -50,7 +50,6 @@ export const ShareModal = (props) => {
           content={state.buttonContent}
           icon="fork"
         />
-        <Button onClick={() => props.onCloseShare()}>Close</Button>
       </Modal.Actions>
     </Modal>
   );

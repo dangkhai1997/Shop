@@ -33,12 +33,13 @@ export const DeleteModal = (props) => {
 
   return (
     <Modal
+      size={"tiny"}
       open={props.isShowDeleteModal}
       onClose={() => props.showDeleteModal(false)}
     >
-      <Header icon="question" content={`Delete Item - ${state.name} !`} />
+      <Modal.Header>{`Delete Item - ${state.name} !`}</Modal.Header>
       <Modal.Content>
-        <p>
+        <p style={{ textAlign: "center" }}>
           Are you sure to want to delete <strong> {state.name}</strong> ?
         </p>
 
