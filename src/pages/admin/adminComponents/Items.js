@@ -113,6 +113,7 @@ export const Items = (props) => {
             content="Add New Item"
             icon="add"
             labelPosition="left"
+            onClick={onUpdateItem}
           />
         </Segment>
 
