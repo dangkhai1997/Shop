@@ -1,68 +1,56 @@
 import React, { useEffect, useState } from "react";
-import { Button,Form, Header, Icon, Modal, Image } from "semantic-ui-react";
-import QRCode from 'qrcode.react';
+import { Button, Form, Header, Icon, Modal, Image } from "semantic-ui-react";
+import QRCode from "qrcode.react";
 export const ShareModal = (props) => {
-  useEffect(() => {
-  }, []);
-    
-const [state, setState] = useState({
-    buttonConten: 'Copy',
-    link: window.location.href.replace('admin','shop')
-});
-    
-     const copyLink = () => {
-         navigator.clipboard.writeText(state.link);
-         setState({
+  useEffect(() => {}, []);
+
+  const [state, setState] = useState({
+    buttonContent: "Copy",
+    link: window.location.href.replace("admin", "shop"),
+  });
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(state.link);
+    setState({
       ...state,
-      buttonConten: 'Copied',
+      buttonContent: "Copied",
     });
-        
+
     setTimeout(() => {
       setState({
-      ...state,
-      buttonConten: 'Copy',
-    });
+        ...state,
+        buttonContent: "Copy",
+      });
     }, 5000);
   };
-    
+
   return (
     <Modal
       open={props.isShowModal}
-      onClose={()=>props.onCloseShare()}
+      onClose={() => props.onCloseShare()}
+      size={"tiny"}
+      dimmer
     >
-      <Header icon="share" content='Share Shop' />
+      <Modal.Header>Share</Modal.Header>
       <Modal.Content>
-        <div style={{ textAlign: 'center'}}>
+        <div style={{ textAlign: "center" }}>
           <QRCode
-            id='qrcode'
+            id="qrcode"
             value={state.link}
             size={290}
-            level={'H'}
-                      includeMargin={true} />
-              </div>
-              
-              <Button
-                  onClick={copyLink}
-      basic
-      color='blue'
-      content={state.buttonConten}
-      icon='fork'
-      label={{
-        as: 'a',
-        basic: true,
-        color: 'blue',
-        pointing: 'left',
-        content: '2,048',
-      }}
-    />
-            
-            
+            level={"H"}
+            includeMargin={true}
+          />
+        </div>
       </Modal.Content>
       <Modal.Actions>
-       
-        <Button color="green" onClick={()=>props.onCloseShare()}>
-          <Icon name="checkmark" /> Ok
-        </Button>
+        <Button
+          onClick={copyLink}
+          color="brown"
+          content={state.buttonContent}
+          icon="fork"
+        />
+        <Button onClick={() => props.onCloseShare()}>Close</Button>
       </Modal.Actions>
     </Modal>
   );
