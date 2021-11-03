@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Icon, Label, Menu, Table } from "semantic-ui-react";
+import { Header, Icon, Label, Menu, Segment, Table } from "semantic-ui-react";
 import { Item } from "./Item";
 import { UpdateItemModal } from "./adminModals/UpdateItemModal";
 import { DeleteModal } from "./adminModals/DeleteModal";
@@ -100,43 +100,53 @@ export const Items = (props) => {
         showDeleteModal={showDeleteModal}
         deleteItemSucessfully={deleteItemSucessfully}
       />
-      <Table celled>
-        <Table.Header>
-          <Table.Row>
-            <Button primary onClick={onUpdateItem}>
-              New Item
-            </Button>
-          </Table.Row>
-        </Table.Header>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Picture</Table.HeaderCell>
-            <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Price</Table.HeaderCell>
-            <Table.HeaderCell> </Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>{listItems}</Table.Body>
 
-        <Table.Footer>
-          <Table.Row>
-            <Table.HeaderCell colSpan="4">
-              <Menu floated="right" pagination>
-                <Menu.Item as="a" icon>
-                  <Icon name="chevron left" />
-                </Menu.Item>
-                <Menu.Item as="a">1</Menu.Item>
-                <Menu.Item as="a">2</Menu.Item>
-                <Menu.Item as="a">3</Menu.Item>
-                <Menu.Item as="a">4</Menu.Item>
-                <Menu.Item as="a" icon>
-                  <Icon name="chevron right" />
-                </Menu.Item>
-              </Menu>
-            </Table.HeaderCell>
-          </Table.Row>
-        </Table.Footer>
-      </Table>
+      <Segment>
+        <Segment basic clearing style={{ padding: "0px" }}>
+          <Header as="h4" floated="left" color="brown">
+            Shop Items
+          </Header>
+          <Button
+            size={"tiny"}
+            color="brown"
+            floated="right"
+            content="Add New Item"
+            icon="add"
+            labelPosition="left"
+          />
+        </Segment>
+
+        <Table celled>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Picture</Table.HeaderCell>
+              <Table.HeaderCell>Name</Table.HeaderCell>
+              <Table.HeaderCell>Price</Table.HeaderCell>
+              <Table.HeaderCell> </Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>{listItems}</Table.Body>
+
+          <Table.Footer>
+            <Table.Row>
+              <Table.HeaderCell colSpan="4">
+                <Menu floated="right" pagination>
+                  <Menu.Item as="a" icon>
+                    <Icon name="chevron left" />
+                  </Menu.Item>
+                  <Menu.Item as="a">1</Menu.Item>
+                  <Menu.Item as="a">2</Menu.Item>
+                  <Menu.Item as="a">3</Menu.Item>
+                  <Menu.Item as="a">4</Menu.Item>
+                  <Menu.Item as="a" icon>
+                    <Icon name="chevron right" />
+                  </Menu.Item>
+                </Menu>
+              </Table.HeaderCell>
+            </Table.Row>
+          </Table.Footer>
+        </Table>
+      </Segment>
     </>
   );
 };

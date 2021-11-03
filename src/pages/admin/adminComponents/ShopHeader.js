@@ -60,6 +60,7 @@ export const ShopHeader = (props) => {
           <Grid.Column width={5}>
             <Segment color="brown" className="admin-action-group">
               <Button
+                basic
                 fluid
                 id="btn-copy"
                 content={state.isCopied ? "Copied" : "Copy Link"}
@@ -70,6 +71,7 @@ export const ShopHeader = (props) => {
               ></Button>
 
               <Button
+                basic
                 fluid
                 content="Share"
                 icon="share"
@@ -80,6 +82,7 @@ export const ShopHeader = (props) => {
 
               {props.isMenu && (
                 <Button
+                  basic
                   fluid
                   color="brown"
                   content="Shop Order"
@@ -91,6 +94,7 @@ export const ShopHeader = (props) => {
 
               {!props.isMenu && (
                 <Button
+                  basic
                   fluid
                   color="brown"
                   content="Shop Menu"
