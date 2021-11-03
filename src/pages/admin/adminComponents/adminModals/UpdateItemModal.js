@@ -60,8 +60,8 @@ export const UpdateItemModal = (props) => {
   };
 
   const saveItem = () => {
-    if(state.name === '' || state.price === '' || !state.newImage){
-      dispatch(actions.startToast('Please enter name, price, image !'));
+    if (state.name === "" || state.price === "" || !state.newImage) {
+      dispatch(actions.startToast("Please enter name, price, image !"));
       return;
     }
 
@@ -83,7 +83,7 @@ export const UpdateItemModal = (props) => {
     props.updateToList(newItem);
     props.closeModal();
   };
-  const insertItem = async() => {
+  const insertItem = async () => {
     const payLoad = {
       shopId: auth.user.shopId,
       name: state.name,
@@ -98,32 +98,40 @@ export const UpdateItemModal = (props) => {
   };
 
   return (
-    <Modal onClose={() => props.closeModal()} open={props.isShowModal}>
-      <Modal.Header>Select a Photo</Modal.Header>
-      <Form>
-        <Form.Field>
-          <label>Name</label>
+    <Modal onClose={() => props.closeModal()} open={props.isShowModal} dimmer>
+      <Modal.Header>Modify Item</Modal.Header>
+      <Modal.Content>
+        <Form>
+          <Form.Field>
+            <label>Name</label>
+            <input
+              placeholder="Name"
+              name="name"
+              onChange={handleChange}
+              value={state.name}
+            />
+          </Form.Field>
+
+          <Form.Field>
+            <label>Price</label>
+            <CurrencyFormat
+              thousandSeparator={true}
+              prefix={"$"}
+              onChange={handleChange}
+              placeholder="Price"
+              name="price"
+              value={state.price}
+            />
+          </Form.Field>
+
           <input
-            placeholder="Name"
-            name="name"
-            onChange={handleChange}
-            value={state.name}
+            type="file"
+            id="myFile"
+            onChange={onFileChange}
+            name="newImage"
+            style={{ marginBottom: "10px" }}
           />
-        </Form.Field>
 
-        <Form.Field>
-          <label>Price</label>
-          <CurrencyFormat
-            thousandSeparator={true}
-            prefix={"$"}
-            onChange={handleChange}
-            placeholder="Price"
-            name="price"
-            value={state.price}
-          />
-        </Form.Field>
-
-        <Form.Field>
           <Image
             src={
               state.imageUrl !== ""
@@ -132,21 +140,12 @@ export const UpdateItemModal = (props) => {
                 ? `data:image/png;base64,${state.image}`
                 : "/images/noproduct.png"
             }
-            size="small"
-            style={{ margin: "0 auto" }}
+            size="medium"
+            bordered
+            centered
           />
-
-          <div style={{ maxWidth: "250px", margin: "0 auto" }}>
-            <input
-              type="file"
-              id="myFile"
-              onChange={onFileChange}
-              name="newImage"
-            />
-          </div>
-        </Form.Field>
-      </Form>
-      <br />
+        </Form>
+      </Modal.Content>
       <Modal.Actions>
         <Button
           content="Save"

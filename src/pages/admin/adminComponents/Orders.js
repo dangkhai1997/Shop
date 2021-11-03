@@ -36,7 +36,7 @@ export const Orders = (props) => {
         closeModal={closeModal}
       />
 
-      <Segment>
+      <Segment color="brown">
         <Segment basic clearing style={{ padding: "0px" }}>
           <Header as="h4" floated="left" color="brown">
             Shop Orders

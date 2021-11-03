@@ -101,7 +101,7 @@ export const Items = (props) => {
         deleteItemSucessfully={deleteItemSucessfully}
       />
 
-      <Segment>
+      <Segment color="brown">
         <Segment basic clearing style={{ padding: "0px" }}>
           <Header as="h4" floated="left" color="brown">
             Shop Items
@@ -120,10 +120,10 @@ export const Items = (props) => {
         <Table celled>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>Picture</Table.HeaderCell>
-              <Table.HeaderCell>Name</Table.HeaderCell>
-              <Table.HeaderCell>Price</Table.HeaderCell>
-              <Table.HeaderCell> </Table.HeaderCell>
+              <Table.HeaderCell width={4}>Picture</Table.HeaderCell>
+              <Table.HeaderCell width={5}>Name</Table.HeaderCell>
+              <Table.HeaderCell width={3}>Price</Table.HeaderCell>
+              <Table.HeaderCell width={2}></Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>{listItems}</Table.Body>
