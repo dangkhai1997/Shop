@@ -174,7 +174,9 @@ export const Login = (props) => {
         <Modal.Description>{state.notify}</Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        <Button onClick={closeModal} color="brown">OK</Button>
+        <Button onClick={closeModal} color="brown">
+          OK
+        </Button>
       </Modal.Actions>
     </Modal>
   );
@@ -186,7 +188,7 @@ export const Login = (props) => {
       <Grid columns="equal">
         <Grid.Column></Grid.Column>
         <Grid.Column width={8}>
-          <Segment style={{ marginTop: "30%" }}>
+          <Segment color="brown" style={{ marginTop: "30%" }}>
             <Button.Group style={{ marginTop: "10px", marginBottom: "10px" }}>
               <Button
                 onClick={() => changePage(true)}

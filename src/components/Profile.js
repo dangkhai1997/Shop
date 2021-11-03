@@ -1,36 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { Grid, Segment, Image } from "semantic-ui-react";
+import React from "react";
+import { Grid, Image, Header } from "semantic-ui-react";
 export const Profile = (props) => {
   return (
-    <Grid columns={2} divided>
-      <Grid.Row stretched>
-        <Grid.Column>
-          <Segment>
-            <Image
-              style={{ margin: "0 auto" }}
-              src={
-                props.shopInformation?.image
-                  ? `data:image/png;base64,${props.shopInformation?.image}`
-                  : "/images/default.png"
-              }
-              size="small"
-            />
-          </Segment>
-        </Grid.Column>
-        <Grid.Column>
-          <Segment>
-            <div style={{ fontSize: "xx-large" }}>
-              {props.shopInformation?.name}
-            </div>
-          </Segment>
-          <Segment>
-            <div style={{ fontSize: "xx-large" }}>
-              <i className="phone volume icon"></i>
-              {props.shopInformation?.phoneNumber}
-            </div>
-          </Segment>
-        </Grid.Column>
-      </Grid.Row>
+    <Grid columns={2}>
+      <Grid.Column width={5}>
+        <Image
+          src={
+            props.shopInformation?.image
+              ? `data:image/png;base64,${props.shopInformation?.image}`
+              : "/images/default.png"
+          }
+          fluid
+        />
+      </Grid.Column>
+      <Grid.Column width={11}>
+        <div className="admin-profile">
+          <Header as="h6" color="brown" className="profile-type">
+            Shop Name
+          </Header>
+          <Header as="h3" className="profile-text">
+            {props.shopInformation?.name}
+          </Header>
+          <Header as="h6" color="brown" className="profile-type">
+            Phone Number
+          </Header>
+          <Header as="h3" className="profile-text">
+            {props.shopInformation?.phoneNumber}
+          </Header>
+        </div>
+      </Grid.Column>
     </Grid>
   );
 };

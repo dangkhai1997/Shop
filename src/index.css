@@ -12,3 +12,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.admin-action-group {
+  background-color: #ffbe76;
+}
+
+.admin-action-group .button {
+  margin-bottom: 10px !important;
+}
+
+.admin-profile {
+  /* padding: 15px; */
+  text-align: left;
+}
+
+.admin-profile .profile-type {
+  margin-bottom: 0 !important;
+}
+
+.admin-profile .profile-text {
+  margin-top: 5px !important;
+}

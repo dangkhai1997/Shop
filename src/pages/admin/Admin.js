@@ -6,6 +6,7 @@ import { Orders } from "./adminComponents/Orders";
 import { orderApi } from "../../api/order.api";
 import { LogLevel, HubConnectionBuilder } from "@microsoft/signalr";
 import { Hub } from "../../constants/hub.enpoint.constants";
+import { Grid } from "semantic-ui-react";
 
 export const Admin = (props) => {
   const shopId = props.location.pathname.split("/")[2] || "";
@@ -85,17 +86,21 @@ export const Admin = (props) => {
   }, [state.addedOrder]);
 
   return (
-    <div>
-      <ShopHeader
-        shopInformation={state.shopInformation}
-        changeView={changeView}
-        isMenu={state.isMenu}
-      />
-      {state.isMenu ? (
-        <Items items={state.shopInformation?.items} />
-      ) : (
-        <Orders orders={state.orders} />
-      )}
-    </div>
+    <Grid columns="equal" style={{ marginTop: "10px" }}>
+      <Grid.Column></Grid.Column>
+      <Grid.Column width={8}>
+        <ShopHeader
+          shopInformation={state.shopInformation}
+          changeView={changeView}
+          isMenu={state.isMenu}
+        />
+        {state.isMenu ? (
+          <Items items={state.shopInformation?.items} />
+        ) : (
+          <Orders orders={state.orders} />
+        )}
+      </Grid.Column>
+      <Grid.Column></Grid.Column>
+    </Grid>
   );
 };
