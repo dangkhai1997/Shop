@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { shopApi } from "../../api/shop.api";
-import { Grid, Image } from "semantic-ui-react";
+import { Grid, Image, Table } from "semantic-ui-react";
 import { Shop } from "./Shop";
 export const Shops = (props) => {
   const [state, setState] = useState({
@@ -24,9 +24,19 @@ export const Shops = (props) => {
   ));
   return (
     <>
-      <Grid columns={3} divided>
-        <Grid.Row>{listShop}</Grid.Row>
-      </Grid>
+      <Table singleLine>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>Shop Id</Table.HeaderCell>
+            <Table.HeaderCell>Shop Name</Table.HeaderCell>
+            <Table.HeaderCell>Image</Table.HeaderCell>
+            <Table.HeaderCell>Phone Number</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+        {listShop}
+        </Table.Body>
+      </Table>
     </>
   );
 };

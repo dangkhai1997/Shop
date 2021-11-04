@@ -11,7 +11,7 @@ export const Shop = (props) => {
 
   const [state, setState] = useState({
     isShowModal: false,
-    notify:'',
+    notify: "",
   });
 
   const history = useHistory();
@@ -22,23 +22,22 @@ export const Shop = (props) => {
     });
 
     if (cart && cart.isSuccess) {
-     history.push(`/cart/${cart.cartId}`);
+      history.push(`/cart/${cart.cartId}`);
       return;
     }
 
-    if(cart.errorMessage === Message.ExistCartWithShop){
+    if (cart.errorMessage === Message.ExistCartWithShop) {
       setState({
         ...state,
         isShowModal: true,
         notify: Message.ExistCartWithShop,
       });
-      
+
       history.push(`/cart/${cart.cartId}`);
     }
-
   }, []);
 
-  const closeModal = async() => {
+  const closeModal = async () => {
     const cart = await cartApi.getCartExist({
       customerId: authUser.user.customerId,
       shopId,
@@ -46,8 +45,8 @@ export const Shop = (props) => {
 
     if (cart && cart.isSuccess) {
       history.push(`/cart/${cart.cartId}`);
-       return;
-     }
+      return;
+    }
 
     setState({
       ...state,
@@ -67,7 +66,5 @@ export const Shop = (props) => {
     </Modal>
   );
 
-  return <>
-  {notifyModal}
-  </>;
+  return <>{notifyModal}</>;
 };

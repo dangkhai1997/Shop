@@ -94,7 +94,7 @@ export const Login = (props) => {
       ...state,
       validate: validate,
     });
-  }, [state.name, state.phoneNumber, state.image]);
+  }, [state.name, state.phoneNumber, state.image, state.isLoginPage]);
 
   const dispatch = useDispatch();
   const submitHandler = (event) => {

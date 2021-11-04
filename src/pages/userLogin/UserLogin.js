@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 
 export const UserLogin = (props) => {
   const authUser = useSelector((state) => state.authUser);
+  const history = useHistory();
 
   const [state, setState] = useState({
     name: "",
@@ -47,7 +48,13 @@ export const UserLogin = (props) => {
     }
 
     if (!isValid) {
-      dispatch(actions.startToast("Please enter name, phone number, image !"));
+      dispatch(
+        actions.startToast(
+          `Please enter ${
+            state.isLoginPage ? "phone number " : "name, phone number, image "
+          }!`
+        )
+      );
     }
     return isValid;
   };
@@ -62,6 +69,7 @@ export const UserLogin = (props) => {
 
   useEffect(() => {
     if (authUser.user.customerId) {
+      history.push("/shops");
       return;
     }
   }, [authUser]);
