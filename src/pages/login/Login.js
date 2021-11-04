@@ -188,7 +188,7 @@ export const Login = (props) => {
       <Grid columns="equal">
         <Grid.Column></Grid.Column>
         <Grid.Column width={8}>
-          <Segment color="brown" style={{ marginTop: "30%" }}>
+          <Segment color="brown" style={{ marginTop: "20%" }}>
             <Button.Group style={{ marginTop: "10px", marginBottom: "10px" }}>
               <Button
                 onClick={() => changePage(true)}

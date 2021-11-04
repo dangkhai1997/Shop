@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../redux";
-import { Button, Form, Image } from "semantic-ui-react";
+import { Button, Form, Grid, Image, Segment } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 
 export const UserLogin = (props) => {
@@ -46,8 +46,8 @@ export const UserLogin = (props) => {
         new RegExp("^((0)[0-9]{9})$").test(state.phoneNumber);
     }
 
-    if(!isValid){
-      dispatch(actions.startToast('Please enter name, phone number, image !'));
+    if (!isValid) {
+      dispatch(actions.startToast("Please enter name, phone number, image !"));
     }
     return isValid;
   };
@@ -66,11 +66,11 @@ export const UserLogin = (props) => {
     }
   }, [authUser]);
 
-  const changePage = (e) => {
-    e.preventDefault();
+  const changePage = (isLoginPage) => {
     setState({
       ...state,
-      isLoginPage: !state.isLoginPage,
+      isLoginPage,
+      isSubmit: false,
     });
   };
 
@@ -88,47 +88,83 @@ export const UserLogin = (props) => {
   };
 
   return (
-    <div>
-      <a href="javascript.void(0)" onClick={changePage}>
-        {state.isLoginPage ? "Register" : "Login"}
-      </a>
-      <Form onSubmit={submitHandler}>
-        {!state.isLoginPage && (
-          <Form.Field>
-            <label>Customer Name</label>
+    <>
+      <Grid columns="equal">
+        <Grid.Column></Grid.Column>
+        <Grid.Column width={8}>
+          <Segment color="brown" style={{ marginTop: "20%" }}>
+            <Button.Group style={{ marginTop: "10px", marginBottom: "10px" }}>
+              <Button
+                onClick={() => changePage(true)}
+                active={state.isLoginPage}
+                color="orange"
+                basic={!state.isLoginPage}
+              >
+                Sign In
+              </Button>
+              <Button.Or />
+              <Button
+                onClick={() => changePage(false)}
+                active={!state.isLoginPage}
+                color="orange"
+                basic={state.isLoginPage}
+              >
+                Sign Up
+              </Button>
+            </Button.Group>
 
-            <input
-              placeholder="Customer Name"
-              onChange={handleChange}
-              name="name"
-            />
-          </Form.Field>
-        )}
-        <Form.Field>
-          <label>Phone Number</label>
-          <input
-            placeholder="Phone Number"
-            onChange={handleChange}
-            name="phoneNumber"
-          />
-        </Form.Field>
-        {!state.isLoginPage && (
-          <>
-            <Image src={state.url} size="small" style={{ margin: "0 auto" }} />
-            <div style={{ maxWidth: "250px", margin: "0 auto" }}>
-              <input
-                type="file"
-                id="myFile"
-                onChange={onFileChange}
-                name="image"
-              />
-            </div>
-          </>
-        )}
-        <div>
-          <Button type="submit">{!state.isLoginPage ? "Save" : "Login"}</Button>
-        </div>
-      </Form>
-    </div>
+            <Form onSubmit={submitHandler}>
+              {!state.isLoginPage && (
+                <Form.Field>
+                  <label>Customer Name</label>
+
+                  <input
+                    placeholder="Customer Name"
+                    onChange={handleChange}
+                    name="name"
+                  />
+                </Form.Field>
+              )}
+              <Form.Field>
+                <label>Phone Number</label>
+                <input
+                  placeholder="Phone Number"
+                  onChange={handleChange}
+                  name="phoneNumber"
+                />
+              </Form.Field>
+              {!state.isLoginPage && (
+                <div>
+                  <input
+                    type="file"
+                    id="myFile"
+                    onChange={onFileChange}
+                    name="image"
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <Image
+                    src={state.url}
+                    size="medium"
+                    bordered
+                    centered
+                    style={{ marginBottom: "10px" }}
+                  />
+                </div>
+              )}
+              <div>
+                <Button
+                  color="brown"
+                  type="submit"
+                  style={{ marginTop: "10px" }}
+                >
+                  {!state.isLoginPage ? "Submit" : "Login"}
+                </Button>
+              </div>
+            </Form>
+          </Segment>
+        </Grid.Column>
+        <Grid.Column></Grid.Column>
+      </Grid>
+    </>
   );
 };
