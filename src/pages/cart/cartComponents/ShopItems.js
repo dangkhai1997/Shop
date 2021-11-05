@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Icon, Label, Menu, Table } from "semantic-ui-react";
+import { Icon, Menu, Table } from "semantic-ui-react";
 import { ShopItem } from "./ShopItem";
-import { Button } from "semantic-ui-react";
 
 export const ShopItems = (props) => {
   const [state, setState] = useState({
     items: [],
   });
-  
+
   useEffect(() => {
     setState({
       ...state,
@@ -19,7 +18,7 @@ export const ShopItems = (props) => {
     <ShopItem
       key={item.itemId}
       item={item}
-      addToCart = {()=>props.addToCart(item)}
+      addToCart={() => props.addToCart(item)}
     />
   ));
 
@@ -28,10 +27,10 @@ export const ShopItems = (props) => {
       <Table celled>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>Picture</Table.HeaderCell>
-            <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Price</Table.HeaderCell>
-            <Table.HeaderCell> </Table.HeaderCell>
+            <Table.HeaderCell width={3}>Picture</Table.HeaderCell>
+            <Table.HeaderCell width={5}>Name</Table.HeaderCell>
+            <Table.HeaderCell width={3}>Price</Table.HeaderCell>
+            <Table.HeaderCell width={3}></Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>{listItems}</Table.Body>

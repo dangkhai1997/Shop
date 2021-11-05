@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Icon, Label, Menu, Table, Checkbox } from "semantic-ui-react";
-import { ItemIncart } from "./ItemIncart";
-import { Button } from "semantic-ui-react";
-import { useSelector, useDispatch } from "react-redux";
+import { Label, Table, Segment } from "semantic-ui-react";
+import { ItemInCart } from "./ItemInCart";
+import { useSelector } from "react-redux";
 
-export const ItemsIncart = (props) => {
+export const ItemsInCart = (props) => {
   const authUser = useSelector((state) => state.authUser);
 
   const [state, setState] = useState({
@@ -23,7 +22,7 @@ export const ItemsIncart = (props) => {
   }, [props.items]);
 
   const listItems = state.items?.map((item) => (
-    <ItemIncart
+    <ItemInCart
       key={item.itemId}
       item={item}
       updateAmountCart={props.updateAmountCart}
@@ -31,32 +30,25 @@ export const ItemsIncart = (props) => {
   ));
 
   return (
-    <>
-      <div style={{ float: "left" }}>
-        <Label as="a" image>
-          <img src="https://react.semantic-ui.com/images/avatar/small/joe.jpg" />
-          {state.items[0]?.customerName}
-          
-        </Label>
+    <Segment color="brown">
+      <Label
+        size="large"
+        as="a"
+        content={state.items[0]?.customerName}
+        icon={state.isCompleted ? "check" : "user circle"}
+        color={state.items[0]?.customerId === props.hostId ? "orange" : "grey"}
+      />
 
-        {state.items[0]?.customerId === props.hostId ?
-           <span style={{fontSize: '1.5rem'}}>★</span>  :
-          authUser.user.customerId !== state.items[0]?.customerId && (
-          <Checkbox toggle label="Completed" disabled checked={state.isCompleted} />
-        )}
-      </div>
-
-      <Table celled>
+      <Table basic="very" celled>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>Picture</Table.HeaderCell>
-            <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Price</Table.HeaderCell>
-            <Table.HeaderCell> </Table.HeaderCell>
+            <Table.HeaderCell>Item</Table.HeaderCell>
+            <Table.HeaderCell>Quantity</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
+
         <Table.Body>{listItems}</Table.Body>
       </Table>
-    </>
+    </Segment>
   );
 };

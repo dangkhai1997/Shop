@@ -9,7 +9,6 @@ import {
   Tracking,
   Shop,
   NotFound,
-  Home,
   AllShop,
 } from "../pages";
 export const Routes = () => {
@@ -25,7 +24,6 @@ export const Routes = () => {
       <Route path="/tracking" component={Tracking} />
       <Route path="/shop" component={Shop} />
       <Route path="/shops" component={AllShop} />
-      <Route exact path="/" component={Home} />
       <Route component={NotFound} />
     </Switch>
   );

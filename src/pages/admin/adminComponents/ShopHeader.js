@@ -50,6 +50,7 @@ export const ShopHeader = (props) => {
   return (
     <>
       <ShareModal isShowModal={state.isShowModal} onCloseShare={onCloseShare} />
+
       <Grid columns={2} divided>
         <Grid.Row stretched>
           <Grid.Column width={11}>

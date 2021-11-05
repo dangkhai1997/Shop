@@ -1,7 +1,7 @@
-import { ItemsIncart } from "./ItemsIncart";
+import { ItemsInCart } from "./ItemsInCart";
 
 import React, { useState, useEffect } from "react";
-import { Button } from "semantic-ui-react";
+import { Button, Icon, Label } from "semantic-ui-react";
 import { useSelector } from "react-redux";
 import { cartApi } from "../../../api/cart.api";
 import { Message } from "../../../constants/api-response.constants";
@@ -58,9 +58,14 @@ export const ItemsByUser = (props) => {
   };
 
   const submitCart = async () => {
-    const deletedItems = getDeletedItems(); 
+    const deletedItems = getDeletedItems();
     const data = {
-      items: [...props.itemsInCart?.filter(i=>i.customerId === authUser.user.customerId), ...deletedItems],
+      items: [
+        ...props.itemsInCart?.filter(
+          (i) => i.customerId === authUser.user.customerId
+        ),
+        ...deletedItems,
+      ],
       customerId: authUser.user.customerId,
       cartId: props.cartId,
     };
@@ -87,7 +92,7 @@ export const ItemsByUser = (props) => {
   };
 
   const itemsByUser = state.items?.map((item, index) => (
-    <ItemsIncart
+    <ItemsInCart
       updateAmountCart={props.updateAmountCart}
       key={index}
       items={item}
@@ -98,14 +103,32 @@ export const ItemsByUser = (props) => {
   return (
     <>
       {itemsByUser}
-      <div style={{ float: "left" }}>
-        <Button primary onClick={submitCart}
-        disabled={state.isCurrentUserCompleted && props.hostId !== authUser.user.customerId}
+      <Button as="div" labelPosition="right" style={{ width: "100%" }}>
+        <Button
+          fluid
+          color="blue"
+          onClick={submitCart}
+          disabled={
+            state.isCurrentUserCompleted &&
+            props.hostId !== authUser.user.customerId
+          }
+          style={{ width: "210px" }}
         >
-         {props.hostId !== authUser.user.customerId? 'Submit': 'Submit Order' } 
+          <Icon name="send" />
+          {props.hostId !== authUser.user.customerId
+            ? "Submit"
+            : "Submit Order"}
         </Button>
-        Total: {formatter.format(state.total)}
-      </div>
+        <Label
+          as="a"
+          basic
+          color="blue"
+          pointing="left"
+          style={{ width: "100%" }}
+        >
+          {formatter.format(state.total)}
+        </Label>
+      </Button>
     </>
   );
 };

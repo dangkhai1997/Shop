@@ -5,7 +5,7 @@ import { ShopItems } from "./cartComponents/ShopItems";
 import { useSelector, useDispatch } from "react-redux";
 import { ItemsByUser } from "./cartComponents/ItemsByUser";
 import { LogLevel, HubConnectionBuilder } from "@microsoft/signalr";
-import { Button, TextArea, Image, Modal, Form } from "semantic-ui-react";
+import { Button, TextArea, Image, Modal, Form, Grid } from "semantic-ui-react";
 import { orderApi } from "../../api/order.api";
 import { useHistory } from "react-router-dom";
 import { Hub } from "../../constants/hub.enpoint.constants";
@@ -371,15 +371,16 @@ export const Cart = (props) => {
         </Modal.Actions>
       </Modal>
 
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ width: "57%", height: "100%" }}>
+      <Grid style={{ marginTop: "10px" }}>
+        <Grid.Column width={2}></Grid.Column>
+        <Grid.Column width={8}>
           <CartHeader shop={state.cartInformation?.shop}></CartHeader>
           <ShopItems
             items={state.cartInformation?.shop?.items}
             addToCart={addToCart}
           ></ShopItems>
-        </div>
-        <div style={{ width: "42%", height: "100%" }}>
+        </Grid.Column>
+        <Grid.Column width={4}>
           <ItemsByUser
             itemsInCart={state.cartInformation?.itemsInCart}
             updateAmountCart={updateAmountCart}
@@ -388,8 +389,9 @@ export const Cart = (props) => {
             orderCart={orderCart}
             hostId={state.cartInformation?.customerId}
           ></ItemsByUser>
-        </div>
-      </div>
+        </Grid.Column>
+        <Grid.Column width={2}></Grid.Column>
+      </Grid>
     </>
   );
 };

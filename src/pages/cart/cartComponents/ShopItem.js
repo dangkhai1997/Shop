@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Table, Image } from "semantic-ui-react";
+import { Button, Table, Image, Icon } from "semantic-ui-react";
 import { formatter } from "../../../helper/helper";
 
 export const ShopItem = (props) => {
@@ -7,28 +7,32 @@ export const ShopItem = (props) => {
     <Table.Row>
       <Table.Cell>
         <Image
-          id= {`shop_img_${props.item?.itemId}`}
-          style={{ margin: "0 auto" }}
+          id={`shop_img_${props.item?.itemId}`}
           src={
             props.item?.image
               ? `data:image/png;base64,${props.item?.image}`
               : "/images/noproduct.png"
           }
-          size="tiny"
+          centered
+          size="small"
         />
       </Table.Cell>
-      <Table.Cell>{props.item?.name}</Table.Cell>
-      <Table.Cell>{formatter.format(props.item?.price)}</Table.Cell>
-      <Table.Cell>
-        <div>
-          
-          <Button color="red"
-      onClick = {props.addToCart}
-          >
-
-            Add to Cart
-          </Button>
-        </div>
+      <Table.Cell className="table-cell">
+        <span>{props.item?.name}</span>
+      </Table.Cell>
+      <Table.Cell className="table-cell">
+        <span>{formatter.format(props.item?.price)}</span>
+      </Table.Cell>
+      <Table.Cell className="table-cell" centered>
+        <Button
+          icon
+          labelPosition="left"
+          color="green"
+          onClick={props.addToCart}
+        >
+          <Icon name="cart plus" />
+          Add To Cart
+        </Button>
       </Table.Cell>
     </Table.Row>
   );

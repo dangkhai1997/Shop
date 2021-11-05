@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, Image, Form } from "semantic-ui-react";
-import { useSelector, useDispatch } from "react-redux";
-import { formatter } from "../../../helper/helper";
+import { Button, Table, Image, Icon, Header } from "semantic-ui-react";
+import { useSelector } from "react-redux";
 
-export const ItemIncart = (props) => {
+export const ItemInCart = (props) => {
   const authUser = useSelector((state) => state.authUser);
   const [state, setState] = useState({
     src: "",
@@ -38,37 +37,39 @@ export const ItemIncart = (props) => {
 
   return (
     <Table.Row>
-      <Table.Cell>
-        <Image style={{ margin: "0 auto" }} src={state.src} size="tiny" />
+      <Table.Cell width={12}>
+        <Header as="h4" image>
+          <Image src={state.src} rounded size="small" />
+          <Header.Content>
+            {props.item?.itemName}
+            <Header.Subheader>
+              <Button
+                fluid
+                color={"red"}
+                animated
+                disabled={authUser.user.customerId !== props.item?.customerId}
+                onClick={removeItem}
+                size={"mini"}
+                style={{ marginTop: "5px" }}
+              >
+                <Button.Content visible>Delete Item</Button.Content>
+                <Button.Content hidden>
+                  <Icon name="cart arrow down" />
+                </Button.Content>
+              </Button>
+            </Header.Subheader>
+          </Header.Content>
+        </Header>
       </Table.Cell>
-      <Table.Cell>
-        {props.item?.itemName}
-        <br />
-        {formatter.format(props.item?.price)}
-      </Table.Cell>
-      <Table.Cell>
-        <Form.Field>
-          <input
-            value={props.item?.amount}
-            onChange={handleChangeAmout}
-            type="number"
-            min="1"
-            disabled={authUser.user.customerId !== props.item?.customerId}
-          />
-        </Form.Field>
-        <br />
-        {formatter.format(props.item?.price * props.item?.amount)}
-      </Table.Cell>
-      <Table.Cell>
-        <div>
-          <Button
-            color="red"
-            disabled={authUser.user.customerId !== props.item?.customerId}
-            onClick={removeItem}
-          >
-            X
-          </Button>
-        </div>
+      <Table.Cell width={4}>
+        <input
+          style={{ width: "100%" }}
+          value={props.item?.amount}
+          onChange={handleChangeAmout}
+          type="number"
+          min="1"
+          disabled={authUser.user.customerId !== props.item?.customerId}
+        />
       </Table.Cell>
     </Table.Row>
   );
