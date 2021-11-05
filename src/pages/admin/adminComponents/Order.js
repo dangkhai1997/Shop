@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Button, Table, Image } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Button, Table, Icon } from "semantic-ui-react";
 import { OrderDetailModal } from "./adminModals/OrderDetailModal";
 export const Order = (props) => {
   const formatter = new Intl.NumberFormat("en-US", {
@@ -47,15 +47,39 @@ export const Order = (props) => {
         ></OrderDetailModal>
       )}
       <Table.Row>
-        <Table.Cell>{props.index + 1}</Table.Cell>
-        <Table.Cell>{props.item?.orderId}</Table.Cell>
-        <Table.Cell>{props.item?.customerName}</Table.Cell>
-        <Table.Cell>{props.item?.customerPhoneNumber}</Table.Cell>
-        <Table.Cell>{formatter.format(props.item?.totalPrice)}</Table.Cell>
-        <Table.Cell>{props.item?.status}</Table.Cell>
-        <Table.Cell>{getTime()}</Table.Cell>
-        <Table.Cell>
-          <a onClick={showModal}>View</a>
+        <Table.Cell className="table-cell">
+          <span>{props.index + 1}</span>
+        </Table.Cell>
+        <Table.Cell className="table-cell">
+          <span>{props.item?.orderId}</span>
+        </Table.Cell>
+        <Table.Cell className="table-cell">
+          <span>{props.item?.customerName}</span>
+        </Table.Cell>
+        <Table.Cell className="table-cell">
+          <span>{props.item?.customerPhoneNumber}</span>
+        </Table.Cell>
+        <Table.Cell className="table-cell">
+          <span>{formatter.format(props.item?.totalPrice)}</span>
+        </Table.Cell>
+        <Table.Cell className="table-cell">
+          <span>{props.item?.status}</span>
+        </Table.Cell>
+        <Table.Cell className="table-cell">
+          <span>{getTime()}</span>
+        </Table.Cell>
+        <Table.Cell className="table-cell" centered>
+          <Button
+            animated="vertical"
+            color="blue"
+            size={"mini"}
+            onClick={showModal}
+          >
+            <Button.Content hidden>View</Button.Content>
+            <Button.Content visible>
+              <Icon name="eye" />
+            </Button.Content>
+          </Button>
         </Table.Cell>
       </Table.Row>
     </>
