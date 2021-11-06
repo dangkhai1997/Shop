@@ -92,11 +92,11 @@ export const OrderDetailModal = (props) => {
         <Grid columns={3}>
           <Grid.Row stretched style={{fontSize:'1.5rem',fontWeight: '600'}}>
             <Grid.Column>
-              Order Number #12345
+              Order Number {state.item?.orderId}
               <br />
-              Customer Name: aa
+              Customer Name: {state.item?.customerName}
               <br />
-              Customer Phone 090xxxxxxx
+              Customer Phone: {state.item?.customerPhoneNumber}
             </Grid.Column>
 
             <Grid.Column>
@@ -114,7 +114,7 @@ export const OrderDetailModal = (props) => {
                 onChange={hanldeChangeStatus}
               />
               <Segment style={{ maxHeight: "40%", marginTop: "2rem" }}>
-                order time: {props.time}
+                Order time: {props.time}
               </Segment>
             </Grid.Column>
           </Grid.Row>

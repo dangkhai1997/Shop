@@ -1,5 +1,4 @@
 import { ItemsInCart } from "./ItemsInCart";
-
 import React, { useState, useEffect } from "react";
 import { Button, Icon, Label } from "semantic-ui-react";
 import { useSelector } from "react-redux";

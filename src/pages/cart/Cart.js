@@ -47,7 +47,7 @@ export const Cart = (props) => {
     // newAmount alway -1
     const itemInshop = getItem(itemId);
 
-    const itemIncart = {
+    const itemInCart = {
       price: itemInshop.price,
       customerId,
       cartId: cartId,
@@ -59,11 +59,11 @@ export const Cart = (props) => {
       itemIsActive: true,
     };
 
-    addCart(itemIncart);
+    addCart(itemInCart);
   };
 
   const addToCart = (item) => {
-    const itemIncart = {
+    const itemInCart = {
       price: item.price,
       customerId: authUser.user.customerId,
       cartId: cartId,
@@ -81,22 +81,22 @@ export const Cart = (props) => {
       itemId: item.itemId,
       newAmount: -1,
     });
-    addCart(itemIncart);
+    addCart(itemInCart);
   };
 
-  const addCart = (itemIncart) => {
+  const addCart = (itemInCart) => {
     const isExistUserCart = state.cartInformation?.itemsInCart.find(
       (c) =>
-        c.itemId === itemIncart.itemId && c.customerId === itemIncart.customerId
+        c.itemId === itemInCart.itemId && c.customerId === itemInCart.customerId
     );
-    isExistUserCart ? updateCart(itemIncart) : addNewCart(itemIncart);
+    isExistUserCart ? updateCart(itemInCart) : addNewCart(itemInCart);
   };
 
-  const updateCart = (itemIncart) => {
+  const updateCart = (itemInCart) => {
     const cartInformation = { ...state.cartInformation };
     const oldItem = cartInformation?.itemsInCart.find(
       (c) =>
-        c.itemId === itemIncart.itemId && c.customerId === itemIncart.customerId
+        c.itemId === itemInCart.itemId && c.customerId === itemInCart.customerId
     );
     oldItem.amount += 1;
 
@@ -106,12 +106,12 @@ export const Cart = (props) => {
     });
   };
 
-  const addNewCart = (itemIncart) => {
-    const item = { ...itemIncart, amount: 1 };
+  const addNewCart = (itemInCart) => {
+    const item = { ...itemInCart, amount: 1 };
     const cartInformation = { ...state.cartInformation };
     if (item.customerId === authUser.user.customerId) {
       const lastestItem = cartInformation.itemsInCart.find(
-        (i) => i.customerId === itemIncart.customerId
+        (i) => i.customerId === itemInCart.customerId
       );
 
       const index = cartInformation.itemsInCart.lastIndexOf(lastestItem);
@@ -348,7 +348,7 @@ export const Cart = (props) => {
         <Modal.Content>
           <Modal.Description>
             {state.cartInformation?.customerId !== authUser.user.customerId ? (
-              `submit successfully, please wait until the cart's host completed`
+              `Submit successfully, please wait until the cart's host completed!`
             ) : (
               <>
                 <Form>
@@ -376,7 +376,7 @@ export const Cart = (props) => {
         <Grid.Column width={8}>
           <CartHeader shop={state.cartInformation?.shop}></CartHeader>
           <ShopItems
-            items={state.cartInformation?.shop?.items}
+            items={state.cartInformation?.shop?.items?.filter(i=>i.isActive)}
             addToCart={addToCart}
           ></ShopItems>
         </Grid.Column>
